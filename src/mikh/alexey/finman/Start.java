@@ -14,9 +14,6 @@ public class Start {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
-        final DbHelper dbh = new DbHelper();
-        final Connection con = dbh.getConnection();
-
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

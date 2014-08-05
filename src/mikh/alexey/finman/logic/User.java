@@ -8,7 +8,6 @@ public class User {
 
     private String login;
     private String password;
-    private int uidLogin;
 
     public void setLogin(String login) {
         this.login = login;

@@ -12,19 +12,19 @@ import java.sql.SQLException;
 public class DbHelper {
 
     private static Connection con;
-    //TODO перенести поля настройки в отдельный фаил Settings.properties
+    //TODO перенести поля настройки в отдельный фаил Settings.properties?
     private String driver = "org.sqlite.JDBC";
     private String url = "jdbc:sqlite:finman.db";
     //На случай, если для подключения к базе нужен логин:пасс
     private String login = "";
     private String password = "";
 
-    private String tableUsersSQL = "CREATE TABLE Users ()";
+    private String tableUsersSQL = "CREATE TABLE Users (LOGIN TEXT PRIMARY KEY NOT NULL, PASSWORD TEXT NOT NULL)";
     private String tableAccountsSQL = "CREATE TABLE Accounts";
     private String tableRecordsSQL = "CREATE TABLE Records";
-    private String tableCategorySQL = "CREATEA TABLE Categories";
+    private String tableCategorySQL = "CREATE TABLE Categories";
 
-    public Connection getConnection(){
+    public DbHelper() {
         try{
             Class.forName(driver);
             if(login.equals("")){
@@ -32,18 +32,26 @@ public class DbHelper {
             }else{
                 con = DriverManager.getConnection(url, login, password);
             }
-            //TODO дописать
-            Statement st = con.createStatement();
-            st.executeUpdate(tableUsersSQL);
-
-
+            //TODO дописать, можно как-то по другому, а так придётся на каждый executeUpdate ловить искл-е
+/*            try{
+                Statement st = con.createStatement();
+                st.executeUpdate(tableUsersSQL);
+                st.executeUpdate(tableAccountsSQL);
+                st.executeUpdate(tableRecordsSQL);
+                st.executeUpdate(tableCategorySQL);
+            }catch (Exception e){
+                e.printStackTrace();
+            }*/
         }catch (ClassNotFoundException e){
             e.printStackTrace();
         }catch (SQLException e){
             e.printStackTrace();
-        }catch (Exception e){
-            e.printStackTrace();
+        }finally {
+            System.exit(0);
         }
+    }
+
+    public Connection getConnection(){
         return con;
     }
 }

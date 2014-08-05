@@ -6,15 +6,15 @@ package mikh.alexey.finman.logic;
 
 public class Category {
 
-    private String categoryDesc;
+    private int categoryId;
     private String categoryName;
 
-    public void setCategoryDesc(String categoryDesc) {
-        this.categoryDesc = categoryDesc;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getCategoryDesc() {
-        return categoryDesc;
+    public int getCategoryId() {
+        return categoryId;
     }
 
     public void setCategoryName(String categoryName) {
