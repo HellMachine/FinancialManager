@@ -12,5 +12,6 @@ public class Record {
     enum Operation {REFILL, WITHDRAW}
     private Date operationDate;
     private double operationSum;
+    private Category operationCat;
     private int uidRec;
 }
