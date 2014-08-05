@@ -6,7 +6,7 @@ import java.util.Set;
  * @author lxmikh@gmail.com
  */
 
-public class LogicSystem implements DataStore{
+public class Data implements DataStore{
 
     @Override
     public User getUser(String name) {
