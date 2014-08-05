@@ -4,6 +4,8 @@ import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author lxmikh@gmail.com
@@ -11,18 +13,33 @@ import java.sql.SQLException;
 
 public class DbHelper {
 
+    static Logger logger = LoggerFactory.getLogger(DbHelper.class);
+
     private static Connection con;
+
     //TODO перенести поля настройки в отдельный фаил Settings.properties?
     private String driver = "org.sqlite.JDBC";
     private String url = "jdbc:sqlite:finman.db";
-    //На случай, если для подключения к базе нужен логин:пасс
     private String login = "";
     private String password = "";
 
-    private String tableUsersSQL = "CREATE TABLE Users (LOGIN TEXT PRIMARY KEY NOT NULL, PASSWORD TEXT NOT NULL)";
-    private String tableAccountsSQL = "CREATE TABLE Accounts";
-    private String tableRecordsSQL = "CREATE TABLE Records";
-    private String tableCategorySQL = "CREATE TABLE Categories";
+    private static String[] create_tables_sql = {"CREATE TABLE Users "
+                                                        + "(LOGIN TEXT PRIMARY KEY NOT NULL, "
+                                                        + "PASSWORD TEXT NOT NULL)",
+                                                 "CREATE TABLE Accounts "
+                                                        + "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                                                        + "USER_LOGIN TEXT NOT NULL, "
+                                                        + "DESCRIPTION TEXT NOT NULL)",
+                                                 "CREATE TABLE Records "
+                                                        + "(ACCOUNT_ID INT NOT NULL, "
+                                                        + "OPERATION_AMOUNT REAL NOT NULL, "
+                                                        + "OPERATION_TYPE TEXT NOT NULL, "
+                                                        + "DESCRIPTION TEXT NOT NULL, "
+                                                        + "CATEGORY_ID INT NOT NULL, "
+                                                        + "DATE TEXT NOT NULL)",
+                                                 "CREATE TABLE Categories "
+                                                        + "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+                                                        + "CATEGORY_NAME TEXT NOT NULL)"};
 
     public DbHelper() {
         try{
@@ -32,21 +49,25 @@ public class DbHelper {
             }else{
                 con = DriverManager.getConnection(url, login, password);
             }
-            //TODO дописать, можно как-то по другому, а так придётся на каждый executeUpdate ловить искл-е
-/*            try{
-                Statement st = con.createStatement();
-                st.executeUpdate(tableUsersSQL);
-                st.executeUpdate(tableAccountsSQL);
-                st.executeUpdate(tableRecordsSQL);
-                st.executeUpdate(tableCategorySQL);
-            }catch (Exception e){
-                e.printStackTrace();
-            }*/
+            logger.info("Connection established!");
+            Statement st = con.createStatement();
+            for(int i = 0; i< create_tables_sql.length; i++){
+                try{
+                    st.executeUpdate(create_tables_sql[i]);
+                    logger.info("Table {} create!", i);
+                }catch (SQLException e){
+                    logger.error("SQLException when create table! Table already exists.");
+                    e.printStackTrace();
+                }
+            }
+            st.close();
         }catch (ClassNotFoundException e){
+            logger.error("ClassNotFoundException when load DB driver!");
             e.printStackTrace();
+            System.exit(0);
         }catch (SQLException e){
+            logger.error("SQLException when create connection!");
             e.printStackTrace();
-        }finally {
             System.exit(0);
         }
     }
