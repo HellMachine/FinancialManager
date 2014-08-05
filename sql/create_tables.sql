@@ -7,8 +7,8 @@ CREATE TABLE IF NOT EXISTS Users
 CREATE TABLE IF NOT EXISTS Accounts
 (
     ID                INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    USER_LOGIN         TEXT                NOT NULL,
-    DESCRIPTION        TEXT                NOT NULL
+    USER_LOGIN        TEXT                NOT NULL,
+    DESCRIPTION       TEXT                NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Records
@@ -24,5 +24,5 @@ CREATE TABLE IF NOT EXISTS Records
 CREATE TABLE IF NOT EXISTS Categories
 (
     ID              INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    NAME            TEXT                NOT NULL,
+    CATEGORY_NAME   TEXT                NOT NULL
 );
