@@ -1,12 +1,16 @@
 package mikh.alexey.finman.logic;
 
+import java.sql.Connection;
 import java.util.Set;
 
 /**
  * @author lxmikh@gmail.com
  */
 
-public class Data implements DataStore{
+public class DBData implements DataStore{
+
+    DbHelper dbHelper = new DbHelper();
+    Connection con = dbHelper.getConnection();
 
     @Override
     public User getUser(String name) {
