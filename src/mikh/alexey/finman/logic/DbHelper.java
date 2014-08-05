@@ -1,5 +1,6 @@
 package mikh.alexey.finman.logic;
 
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,6 +19,11 @@ public class DbHelper {
     private String login = "";
     private String password = "";
 
+    private String tableUsersSQL = "CREATE TABLE Users ()";
+    private String tableAccountsSQL = "CREATE TABLE Accounts";
+    private String tableRecordsSQL = "CREATE TABLE Records";
+    private String tableCategorySQL = "CREATEA TABLE Categories";
+
     public Connection getConnection(){
         try{
             Class.forName(driver);
@@ -26,9 +32,16 @@ public class DbHelper {
             }else{
                 con = DriverManager.getConnection(url, login, password);
             }
+            //TODO дописать
+            Statement st = con.createStatement();
+            st.executeUpdate(tableUsersSQL);
+
+
         }catch (ClassNotFoundException e){
             e.printStackTrace();
         }catch (SQLException e){
+            e.printStackTrace();
+        }catch (Exception e){
             e.printStackTrace();
         }
         return con;
