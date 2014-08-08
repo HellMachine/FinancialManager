@@ -1,7 +1,7 @@
 package mikh.alexey.finman.swing;
 
+import mikh.alexey.finman.helpers.JFrameHelper;
 import mikh.alexey.finman.helpers.MD5;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,22 +19,21 @@ public class LoginUI extends JFrame implements ActionListener {
     private JLabel passLabel = new JLabel("Password:");
     private JButton buttonLogin = new JButton("Login");
     private JButton buttonReg = new JButton("Registration");
-    private JPanel mainPanel = new JPanel();
     private JPanel upPanel = new JPanel();
     private JPanel downPanel = new JPanel();
+    private JPanel mainPanel = new JPanel();
 
-    String pass = "";
+    private String pass = "";
 
     public LoginUI() {
         super("Financial Manager");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setSize(250, 150);
         setResizable(false);
 
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         upPanel.setLayout(new BoxLayout(upPanel, BoxLayout.Y_AXIS));
         downPanel.setLayout(new FlowLayout());
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         loginField.setToolTipText("Input login");
         passwordField.setToolTipText("Input password");
@@ -54,12 +53,24 @@ public class LoginUI extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 MD5 md5 = new MD5();
 
+                //3 след. строки, чтобы избежать deprecated метода getText() для JPasswordField
                 char[] tmp = passwordField.getPassword();
                 for (int i = 0; i < tmp.length; i++) {
                     pass += tmp[i];
                 }
+                    //Проверка на соответствие [must delete]
                     System.out.println("Origin pass: " + pass + "\nMD5 pass: " + md5.getHash(pass) + "\n");
                 pass = "";
+            }
+        });
+
+        buttonReg.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame regFrame = new RegUI();
+                JFrameHelper.getInstance().centerFrame(regFrame);
+                LoginUI.this.setVisible(false);
+                regFrame.setVisible(true);
             }
         });
 
