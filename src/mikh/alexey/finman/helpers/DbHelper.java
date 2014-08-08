@@ -4,6 +4,7 @@ import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,12 +16,14 @@ public class DbHelper {
 
     static Logger logger = LoggerFactory.getLogger(DbHelper.class);
 
-    private static String[] create_tables_sql = {"CREATE TABLE Users "
-            + "(LOGIN TEXT PRIMARY KEY NOT NULL, "
-            + "PASSWORD TEXT NOT NULL)",
+    private static String[] create_tables_sql = {
+            "CREATE TABLE Users "
+                    + "(LOGIN TEXT PRIMARY KEY NOT NULL, "
+                    + "PASSWORD TEXT NOT NULL)",
             "CREATE TABLE Accounts "
                     + "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
                     + "USER_LOGIN TEXT NOT NULL, "
+                    + "BALANCE REAL NOT NULL,"
                     + "DESCRIPTION TEXT NOT NULL)",
             "CREATE TABLE Records "
                     + "(ACCOUNT_ID INT NOT NULL, "
