@@ -54,7 +54,7 @@ public class DbHelper {
             } else {
                 con = DriverManager.getConnection(url, login, password);
             }
-            logger.info("Connection established!");
+            logger.info("Connection OK!");
             Statement st = con.createStatement();
             for (int i = 0; i < create_tables_sql.length; i++) {
                 try {
