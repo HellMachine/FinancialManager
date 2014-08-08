@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
  * @author lxmikh@gmial.com
  */
 
-public class LoginUI extends JFrame implements ActionListener{
+public class LoginUI extends JFrame implements ActionListener {
 
     private JTextField loginField = new JTextField();
     private JPasswordField passwordField = new JPasswordField();
@@ -25,7 +25,7 @@ public class LoginUI extends JFrame implements ActionListener{
 
     String pass = "";
 
-    public LoginUI(){
+    public LoginUI() {
         super("Financial Manager");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -55,13 +55,10 @@ public class LoginUI extends JFrame implements ActionListener{
                 MD5 md5 = new MD5();
 
                 char[] tmp = passwordField.getPassword();
-                for(int i = 0; i < tmp.length; i++){
+                for (int i = 0; i < tmp.length; i++) {
                     pass += tmp[i];
                 }
-
-                System.out.println("Origin login: " + loginField.getText() + "\nMD5 login: " + md5.getHash(loginField.getText()) + "\n");
-                System.out.println("Origin pass: " + pass + "\nMD5 pass: " + md5.getHash(pass) + "\n");
-
+                    System.out.println("Origin pass: " + pass + "\nMD5 pass: " + md5.getHash(pass) + "\n");
                 pass = "";
             }
         });
