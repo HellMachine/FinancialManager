@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS Accounts
 (
     ID                INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     USER_LOGIN        TEXT                NOT NULL,
+    BALANCE           REAL                NOT NULL,
     DESCRIPTION       TEXT                NOT NULL
 );
 
