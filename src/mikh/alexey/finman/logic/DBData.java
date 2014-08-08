@@ -1,5 +1,7 @@
 package mikh.alexey.finman.logic;
 
+import mikh.alexey.finman.helpers.DbHelper;
+
 import java.sql.Connection;
 import java.util.Set;
 
@@ -8,9 +10,6 @@ import java.util.Set;
  */
 
 public class DBData implements DataStore{
-
-    DbHelper dbHelper = new DbHelper();
-    Connection con = dbHelper.getConnection();
 
     @Override
     public User getUser(String name) {
