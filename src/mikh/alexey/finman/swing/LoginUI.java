@@ -2,13 +2,14 @@ package mikh.alexey.finman.swing;
 
 import mikh.alexey.finman.helpers.JFrameHelper;
 import mikh.alexey.finman.helpers.MD5;
+import mikh.alexey.finman.logic.LogicSystem;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * @author lxmikh@gmial.com
+ * @author lxmikh@gmail.com
  */
 
 public class LoginUI extends JFrame implements ActionListener {
@@ -24,12 +25,15 @@ public class LoginUI extends JFrame implements ActionListener {
     private JPanel mainPanel = new JPanel();
 
     private String pass = "";
+    private LogicSystem logicSystem;
 
-    public LoginUI() {
+    public LoginUI(LogicSystem logicSystem) {
         super("Financial Manager");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(250, 150);
         setResizable(false);
+
+        this.logicSystem = logicSystem;
 
         upPanel.setLayout(new BoxLayout(upPanel, BoxLayout.Y_AXIS));
         downPanel.setLayout(new FlowLayout());

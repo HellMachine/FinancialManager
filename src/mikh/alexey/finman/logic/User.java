@@ -8,6 +8,7 @@ public class User {
 
     private String login;
     private String password;
+    private String avatarFileName;
 
     public void setLogin(String login) {
         this.login = login;
@@ -23,6 +24,14 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setAvatarFileName(String avatarFileName) {
+        this.avatarFileName = avatarFileName;
+    }
+
+    public String getAvatarFileName() {
+        return avatarFileName;
     }
 
 

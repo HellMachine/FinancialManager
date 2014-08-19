@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
  * @author lxmikh@gmail.com
  */
 
-public class DbHelper {
+public class DbHelperOld {
 
-    static Logger logger = LoggerFactory.getLogger(DbHelper.class);
+    static Logger logger = LoggerFactory.getLogger(DbHelperOld.class);
 
     private static String[] create_tables_sql = {
             "CREATE TABLE Users "
@@ -43,9 +43,9 @@ public class DbHelper {
     private String login = "";
     private String password = "";
 
-    public static DbHelper instance = new DbHelper();
+    public static DbHelperOld instance = new DbHelperOld();
 
-    private DbHelper() {
+    private DbHelperOld() {
         try {
             Class.forName(driver);
             if (login.equals("")) {
@@ -75,7 +75,7 @@ public class DbHelper {
         }
     }
 
-    public static DbHelper getInstance() {
+    public static DbHelperOld getInstance() {
         return instance;
     }
 

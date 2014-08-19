@@ -1,6 +1,7 @@
 package mikh.alexey.finman.swing;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -24,12 +25,14 @@ public class RegUI extends JFrame implements ActionListener{
     private JTextArea accountDescripton = new JTextArea(5,5);
     private JButton createUserButton = new JButton("Create user");
     private JScrollPane descPane = new JScrollPane(accountDescripton);
+    private Image avatarImg = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imgAvatar/angry.png"));
+    private JComboBox avatarList = new JComboBox();
     private JPanel regPanel = new JPanel();
 
     public RegUI(){
         super("Registration new user");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(250,350);
+        setSize(250,400);
         setResizable(false);
 
         regPanel.setLayout(new BoxLayout(regPanel, BoxLayout.Y_AXIS));
@@ -38,6 +41,8 @@ public class RegUI extends JFrame implements ActionListener{
         descPane.setAlignmentX(LEFT_ALIGNMENT);
         accountDescripton.setLineWrap(true);
 
+        regPanel.add(new JLabel((Icon) avatarImg));
+        regPanel.add(avatarList);
         regPanel.add(loginLabel);
         regPanel.add(loginField);
         regPanel.add(passLabel);

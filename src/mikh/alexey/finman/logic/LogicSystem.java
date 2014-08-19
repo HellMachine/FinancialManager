@@ -9,4 +9,10 @@ import mikh.alexey.finman.helpers.DbHelper;
 public class LogicSystem {
 
     public static DbHelper dbHelper = DbHelper.getInstance();
+
+    private DataStore dataStore;
+
+    public LogicSystem(){
+        dataStore = new DbDataStore();
+    }
 }

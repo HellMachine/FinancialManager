@@ -9,6 +9,8 @@ import java.util.Set;
 public class Account {
 
     private int idAcc;
+    private String nameAcc;
+    private String ownerAcc;
     private double curBalance;
     private Set<Record> transList;
     private String accountDesc;
@@ -17,8 +19,24 @@ public class Account {
         return idAcc;
     }
 
-    public void setIdAcc(int uidAcc) {
-        this.idAcc = uidAcc;
+    public void setIdAcc(int idAcc) {
+        this.idAcc = idAcc;
+    }
+
+    public String getNameAcc() {
+        return nameAcc;
+    }
+
+    public void setNameAcc(String nameAcc) {
+        this.nameAcc = nameAcc;
+    }
+
+    public String getOwnerAcc() {
+        return ownerAcc;
+    }
+
+    public void setOwnerAcc(String ownerAcc) {
+        this.ownerAcc = ownerAcc;
     }
 
     public double getCurBalance() {

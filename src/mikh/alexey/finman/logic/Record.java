@@ -14,6 +14,14 @@ public class Record {
     private Category operationCat;
     private Date operationDate;
 
+    public void setOperationAmount(double operationAmount) {
+        this.operationAmount = operationAmount;
+    }
+
+    public double getOperationAmount() {
+        return operationAmount;
+    }
+
     public void setOperationDesc(String operationDesc) {
         this.operationDesc = operationDesc;
     }
