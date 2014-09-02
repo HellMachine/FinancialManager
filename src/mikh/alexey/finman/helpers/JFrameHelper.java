@@ -1,5 +1,9 @@
 package mikh.alexey.finman.helpers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -7,6 +11,8 @@ import java.awt.*;
  */
 
 public class JFrameHelper {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     public static JFrameHelper instance = new JFrameHelper();
 
@@ -28,6 +34,18 @@ public class JFrameHelper {
             y = 0;
         }
         frame.setBounds(x, y, frame.getWidth(), frame.getHeight());
+    }
+
+    public ImageIcon createIcon(Class<?> recallClass, String path) {
+
+        java.net.URL imgURL = recallClass.getResource(path);
+
+        if (imgURL != null) {
+            return new ImageIcon(imgURL);
+        } else {
+            logger.error("Couldn't find file: " + path);
+            return null;
+        }
     }
 
 }
