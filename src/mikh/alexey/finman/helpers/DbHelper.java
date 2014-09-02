@@ -13,7 +13,7 @@ import java.sql.Statement;
 
 public class DbHelper {
 
-    static Logger logger = LoggerFactory.getLogger(DbHelper.class);
+    private static Logger logger = LoggerFactory.getLogger(DbHelper.class);
 
     private Connection conn;
     private static DbHelper instance;
