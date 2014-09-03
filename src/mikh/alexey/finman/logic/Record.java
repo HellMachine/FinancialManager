@@ -9,7 +9,7 @@ import java.util.Date;
 public class Record {
 
     private double operationAmount;
-    enum OperationеType {REFILL, WITHDRAW}
+    enum OperationType {REFILL, WITHDRAW}
     private String operationDesc;
     private Category operationCat;
     private Date operationDate;

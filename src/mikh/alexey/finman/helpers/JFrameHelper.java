@@ -23,7 +23,7 @@ public class JFrameHelper {
         return instance;
     }
 
-    public static void centerFrame(Window frame) {
+    public void centerFrame(Window frame) {
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((screenSize.getWidth() - frame.getWidth()) / 2);
         if (x < 0) {

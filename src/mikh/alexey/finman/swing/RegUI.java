@@ -1,6 +1,7 @@
 package mikh.alexey.finman.swing;
 
 import mikh.alexey.finman.helpers.JFrameHelper;
+import mikh.alexey.finman.logic.LogicSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.swing.*;
@@ -34,10 +35,14 @@ public class RegUI extends JFrame implements ActionListener{
     private JComboBox avatarList = new JComboBox();
     private JPanel regPanel = new JPanel();
 
-    public RegUI(){
+    private LogicSystem logicSystem;
+
+    public RegUI(LogicSystem logicSystem){
         super("New user");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+
+        this.logicSystem = logicSystem;
 
         avatarImgLabel = new JLabel(JFrameHelper.getInstance().createIcon(getClass(), "img/imgAvatar/emo.png"));
 
@@ -102,6 +107,10 @@ public class RegUI extends JFrame implements ActionListener{
         createUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                RecordDialog dialog = new RecordDialog(new LogicSystem(), true, false);
+                JFrameHelper.getInstance().centerFrame(dialog);
+                dialog.setModal(true);
+                dialog.setVisible(true);
 
             }
         });

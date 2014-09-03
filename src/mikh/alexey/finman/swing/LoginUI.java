@@ -92,7 +92,8 @@ public class LoginUI extends JFrame implements ActionListener {
         buttonReg.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame regFrame = new RegUI();
+                LogicSystem logicSystem = new LogicSystem();
+                JFrame regFrame = new RegUI(logicSystem);
                 JFrameHelper.getInstance().centerFrame(regFrame);
                 LoginUI.this.setVisible(false);
                 regFrame.setVisible(true);

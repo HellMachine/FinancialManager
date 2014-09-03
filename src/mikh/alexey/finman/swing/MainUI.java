@@ -16,7 +16,7 @@ public class MainUI extends JFrame implements ActionListener{
     private LogicSystem logicSystem;
     @Override
     public void actionPerformed(ActionEvent e) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     public void addMenu(){

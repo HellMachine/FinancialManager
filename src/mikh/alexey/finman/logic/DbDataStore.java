@@ -135,7 +135,7 @@ public class DbDataStore implements DataStore {
                 int categoryId = (rs.getInt(rs.findColumn("CATEGORY_ID")));
                 record.setOperationCat(getCategoryById(categoryId));
                 int putField = rs.getInt(rs.findColumn("IS_PUT"));
-                Record.OperationеType refill = Record.OperationеType.REFILL;
+                Record.OperationType refill = Record.OperationType.REFILL;
                 records.add(record);
             }
         } catch (SQLException e) {
