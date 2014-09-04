@@ -18,15 +18,16 @@ public class RecordDialog extends JDialog implements ActionListener {
 
     private static Logger logger = LoggerFactory.getLogger(RecordDialog.class);
 
-    private static final String CMD_REFILL_RB = "isRefill";
-    private static final String CMD_WITHDRAW_RB = "isWithdraw";
-    private static final String CMD_ADD = "addRecord";
-    private static final String CMD_DELETE = "deleteRecord";
-    private static final String CMD_CANCEL = "cancelAction";
+    private static final String CMD_REFILL_RB = "cmdIsRefill";
+    private static final String CMD_WITHDRAW_RB = "cmdIsWithdraw";
+    private static final String CMD_ADD = "cmdAddRecord";
+    private static final String CMD_DELETE = "cmdDeleteRecord";
+    private static final String CMD_CANCEL = "cmdCancelAction";
 
-    private JRadioButton refillRadioButton = new JRadioButton("Refill");
-    private JRadioButton withdrawRadioButton = new JRadioButton("Withdraw");
+    private JRadioButton refillRadioButton = new JRadioButton("Plus");
+    private JRadioButton withdrawRadioButton = new JRadioButton("Minus");
     private JLabel amountLabel = new JLabel("Amount:");
+    private JLabel categoryLabel = new JLabel("Category:");
     private JLabel recordDescLabel = new JLabel("Description:");
     private JLabel confirmMessageLabel = new JLabel("I agree to the deletion of a record.");
     private JTextField amountField = new JTextField(10);
@@ -44,7 +45,7 @@ public class RecordDialog extends JDialog implements ActionListener {
 
     private LogicSystem logicSystem;
 
-    RecordDialog(LogicSystem logicSystem, boolean isAddAction, boolean isDeleteAction){
+    public RecordDialog(LogicSystem logicSystem, boolean isAddAction, boolean isDeleteAction){
         super();
         setTitle("Add/delete record");
         this.logicSystem = logicSystem;
@@ -100,8 +101,11 @@ public class RecordDialog extends JDialog implements ActionListener {
         recordPanel.add(amountField, new GridBagConstraints(1, 1, 2, 1, 1, 1,
                 GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
                 new Insets(2, 2, 2, 2), 0, 0));
-        recordPanel.add(categoryList, new GridBagConstraints(1, 2, 1, 1, 1, 1,
-                GridBagConstraints.NORTH, GridBagConstraints.CENTER,
+        recordPanel.add(categoryLabel, new GridBagConstraints(0, 2, 1, 1, 1, 1,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+                new Insets(2, 2, 2, 2), 0, 0));
+        recordPanel.add(categoryList, new GridBagConstraints(1, 2, 2, 1, 1, 1,
+                GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
                 new Insets(2, 2, 2, 2), 0, 0));
         recordPanel.add(recordDescLabel, new GridBagConstraints(0, 3, 1, 1, 1, 1,
                 GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
@@ -127,7 +131,7 @@ public class RecordDialog extends JDialog implements ActionListener {
 
         setContentPane(recordPanel);
         pack();
-        System.out.println("Width: " + recordPanel.getWidth() + "\n" + "Height: " + recordPanel.getHeight());
+        logger.info("Width:" + recordPanel.getWidth() + ", Height:" + recordPanel.getHeight());
     }
 
 

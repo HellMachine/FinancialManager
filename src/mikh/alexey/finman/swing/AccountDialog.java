@@ -17,9 +17,9 @@ public class AccountDialog extends JDialog implements ActionListener {
 
     private static Logger logger = LoggerFactory.getLogger(AccountDialog.class);
 
-    private static final String CMD_ADD_ACTION = "addAction";
-    private static final String CMD_EDIT_ACTION = "editAction";
-    private static final String CMD_CANCEL_ACTION = "cancelAction";
+    private static final String CMD_ADD_ACTION = "cmdAddAction";
+    private static final String CMD_EDIT_ACTION = "cmdEditAction";
+    private static final String CMD_CANCEL_ACTION = "cmdCancelAction";
 
     private JLabel accountNameLabel = new JLabel("Account name:");
     private JLabel accountBalanceLabel = new JLabel("Account balance:");
@@ -36,7 +36,7 @@ public class AccountDialog extends JDialog implements ActionListener {
     private boolean isEditAction = false;
     private LogicSystem logicSystem;
 
-    AccountDialog(LogicSystem logicSystem, boolean isAddAction, boolean isEditAction) {
+    public AccountDialog(LogicSystem logicSystem, boolean isAddAction, boolean isEditAction) {
         super();
         setTitle("Add/Edit account");
         this.logicSystem = logicSystem;

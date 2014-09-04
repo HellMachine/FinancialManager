@@ -3,7 +3,6 @@ package mikh.alexey.finman.logic;
 import mikh.alexey.finman.helpers.DbHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
