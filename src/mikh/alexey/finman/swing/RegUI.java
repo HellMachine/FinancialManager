@@ -1,6 +1,6 @@
 package mikh.alexey.finman.swing;
 
-import mikh.alexey.finman.helpers.JFrameHelper;
+import mikh.alexey.finman.helpers.Util;
 import mikh.alexey.finman.logic.LogicSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,11 +44,13 @@ public class RegUI extends JFrame implements ActionListener{
 
         this.logicSystem = logicSystem;
 
-        avatarImgLabel = new JLabel(JFrameHelper.getInstance().createIcon(getClass(), "img/imgAvatar/emo.png"));
+        avatarImgLabel = new JLabel(Util.getInstance().createIcon(getClass(), "img/imgAvatar/emo.png"));
 
         descPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         descPane.setAlignmentX(LEFT_ALIGNMENT);
         accountDescripton.setLineWrap(true);
+
+        createUserButton.addActionListener(this);
 
         regPanel.setLayout(new GridBagLayout());
 
@@ -104,20 +106,12 @@ public class RegUI extends JFrame implements ActionListener{
         setContentPane(regPanel);
         pack();
 
-        createUserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                RecordDialog dialog = new RecordDialog(new LogicSystem(), true, false);
-                JFrameHelper.getInstance().centerFrame(dialog);
-                dialog.setModal(true);
-                dialog.setVisible(true);
-
-            }
-        });
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        Util.getInstance().reLogin(RegUI.this);
 
     }
 

@@ -1,8 +1,8 @@
 package mikh.alexey.finman.swing;
 
-import mikh.alexey.finman.helpers.JFrameHelper;
-import mikh.alexey.finman.helpers.MD5;
+import mikh.alexey.finman.helpers.Util;
 import mikh.alexey.finman.logic.LogicSystem;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,16 +14,18 @@ import java.awt.event.ActionListener;
 
 public class LoginUI extends JFrame implements ActionListener {
 
+    private static final String CMD_LOGIN = "cmdLogin";
+    private static final String CMD_REGESTRATION = "cmdRegistration";
+
     private JLabel loginLabel;
     private JLabel passLabel;
     private JTextField loginField = new JTextField(10);
     private JPasswordField passwordField = new JPasswordField(10);
     private JButton buttonLogin = new JButton("Login");
     private JButton buttonReg = new JButton("Registration");
-    private JLabel alertMessage = new JLabel();
+    private JLabel alertMessage = new JLabel("Input login and password");
     private JPanel mainPanel = new JPanel();
 
-    private String pass = "";
     private LogicSystem logicSystem;
 
     public LoginUI(LogicSystem logicSystem) {
@@ -37,12 +39,17 @@ public class LoginUI extends JFrame implements ActionListener {
         passwordField.setToolTipText("Input password");
 
         loginLabel = new JLabel();
-        ImageIcon loginIcon = JFrameHelper.getInstance().createIcon(getClass(), "img/Login.png");
+        ImageIcon loginIcon = Util.getInstance().createIcon(getClass(), "img/Login.png");
         loginLabel.setIcon(new ImageIcon(loginIcon.getImage().getScaledInstance(24, 24, Image.SCALE_DEFAULT)));
 
         passLabel = new JLabel();
-        ImageIcon passIcon = JFrameHelper.getInstance().createIcon(getClass(), "img/Lock.png");
+        ImageIcon passIcon = Util.getInstance().createIcon(getClass(), "img/Lock.png");
         passLabel.setIcon(new ImageIcon(passIcon.getImage().getScaledInstance(24, 24, Image.SCALE_DEFAULT)));
+
+        buttonLogin.setActionCommand(CMD_LOGIN);
+        buttonLogin.addActionListener(this);
+        buttonReg.setActionCommand(CMD_REGESTRATION);
+        buttonReg.addActionListener(this);
 
         mainPanel.setLayout(new GridBagLayout());
 
@@ -71,39 +78,32 @@ public class LoginUI extends JFrame implements ActionListener {
         setContentPane(mainPanel);
         pack();
 
-        buttonLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MD5 md5 = new MD5();
-
-                //3 след. строки, чтобы избежать deprecated метода getText() для JPasswordField
-                char[] tmp = passwordField.getPassword();
-                for (int i = 0; i < tmp.length; i++) {
-                    pass += tmp[i];
-                }
-                    //Проверка на соответствие [must delete]
-                    System.out.println("Origin pass: " + pass + "\nMD5 pass: " + md5.getHash(pass) + "\n");
-                pass = "";
-                alertMessage.setText("Invalid login/pass!");
-                pack();
-            }
-        });
-
-        buttonReg.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                LogicSystem logicSystem = new LogicSystem();
-                JFrame regFrame = new RegUI(logicSystem);
-                JFrameHelper.getInstance().centerFrame(regFrame);
-                LoginUI.this.setVisible(false);
-                regFrame.setVisible(true);
-            }
-        });
-
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String cmd = e.getActionCommand();
+        switch (cmd){
+            case CMD_LOGIN:
+                //Проверка на соответствие [must delete]
+                System.out.println("Origin pass: " + new String(passwordField.getPassword()) +
+                        "\nMD5 pass: " + Util.getInstance().getHash(new String(passwordField.getPassword())));
+
+                alertMessage.setText("Invalid login/pass!");
+                pack();
+
+                JFrame mainUI = new MainUI(logicSystem);
+                Util.getInstance().centerFrame(mainUI);
+                LoginUI.this.setVisible(false);
+                mainUI.setVisible(true);
+                break;
+            case CMD_REGESTRATION:
+                JFrame regFrame = new RegUI(logicSystem);
+                Util.getInstance().centerFrame(regFrame);
+                LoginUI.this.setVisible(false);
+                regFrame.setVisible(true);
+                break;
+        }
 
     }
 }
