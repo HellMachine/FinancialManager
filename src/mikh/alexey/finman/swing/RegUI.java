@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 /**
  * @author lxmikh@gmail.com
@@ -44,7 +45,7 @@ public class RegUI extends JFrame implements ActionListener{
 
         this.logicSystem = logicSystem;
 
-        avatarImgLabel = new JLabel(Util.getInstance().createIcon(getClass(), "img/imgAvatar/emo.png"));
+        avatarImgLabel = new JLabel(Util.getInstance().createIcon(getClass(), "img/imgAvatar/" + logicSystem.avatarFilesList[3]));
 
         descPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         descPane.setAlignmentX(LEFT_ALIGNMENT);
