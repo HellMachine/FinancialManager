@@ -10,6 +10,12 @@ public class User {
     private String password;
     private String avatarFileName;
 
+    public User(String login, String password, String avatarFileName){
+        this.login = login;
+        this.password = password;
+        this.avatarFileName = avatarFileName;
+    }
+
     public void setLogin(String login) {
         this.login = login;
     }

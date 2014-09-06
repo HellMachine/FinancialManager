@@ -4,6 +4,8 @@ import java.util.Set;
 
 public interface DataStore {
 
+    Set<Category> getCategories();
+
     // return null if no such user
     User getUser(String name);
 
