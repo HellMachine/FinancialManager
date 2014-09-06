@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -81,5 +82,14 @@ public class Util {
         }
 
         return hexString.toString();
+    }
+
+    public File[] getAvatarFilesList(String path){
+
+        File[] filesInAvatarFolder;
+        File dir = new File(path);
+        filesInAvatarFolder = dir.listFiles();
+
+        return filesInAvatarFolder;
     }
 }
