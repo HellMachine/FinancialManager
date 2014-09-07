@@ -15,17 +15,11 @@ import java.awt.event.ActionListener;
 public class LoginUI extends JFrame implements ActionListener {
 
     private static final String CMD_LOGIN = "cmdLogin";
-    private static final String CMD_REGESTRATION = "cmdRegistration";
+    private static final String CMD_REGISTRATION = "cmdRegistration";
 
-    private JLabel loginLabel;
-    private JLabel passLabel;
     private JTextField loginField = new JTextField(10);
     private JPasswordField passwordField = new JPasswordField(10);
-    private JButton buttonLogin = new JButton("Login");
-    private JButton buttonReg = new JButton("Registration");
     private JLabel alertMessage = new JLabel("Input login and password");
-    private JPanel mainPanel = new JPanel();
-
     private LogicSystem logicSystem;
 
     public LoginUI(LogicSystem logicSystem) {
@@ -38,19 +32,22 @@ public class LoginUI extends JFrame implements ActionListener {
         loginField.setToolTipText("Input login");
         passwordField.setToolTipText("Input password");
 
-        loginLabel = new JLabel();
+        JLabel loginLabel = new JLabel();
         ImageIcon loginIcon = Util.getInstance().createIcon(getClass(), "img/Login.png");
         loginLabel.setIcon(new ImageIcon(loginIcon.getImage().getScaledInstance(24, 24, Image.SCALE_DEFAULT)));
 
-        passLabel = new JLabel();
+        JLabel passLabel = new JLabel();
         ImageIcon passIcon = Util.getInstance().createIcon(getClass(), "img/Lock.png");
         passLabel.setIcon(new ImageIcon(passIcon.getImage().getScaledInstance(24, 24, Image.SCALE_DEFAULT)));
 
+        JButton buttonLogin = new JButton("Login");
         buttonLogin.setActionCommand(CMD_LOGIN);
         buttonLogin.addActionListener(this);
-        buttonReg.setActionCommand(CMD_REGESTRATION);
+        JButton buttonReg = new JButton("Registration");
+        buttonReg.setActionCommand(CMD_REGISTRATION);
         buttonReg.addActionListener(this);
 
+        JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
 
         mainPanel.add(loginLabel, new GridBagConstraints(0, 0, 1, 1, 0, 0,
@@ -85,19 +82,20 @@ public class LoginUI extends JFrame implements ActionListener {
         String cmd = e.getActionCommand();
         switch (cmd){
             case CMD_LOGIN:
-                //Проверка на соответствие [must delete]
-                System.out.println("Origin pass: " + new String(passwordField.getPassword()) +
-                        "\nMD5 pass: " + Util.getInstance().getHash(new String(passwordField.getPassword())));
-
-                alertMessage.setText("Invalid login/pass!");
-                pack();
-
-                JFrame mainUI = new MainUI(logicSystem);
-                Util.getInstance().centerFrame(mainUI);
-                LoginUI.this.setVisible(false);
-                mainUI.setVisible(true);
+                String login = loginField.getText();
+                String pass = Util.getInstance().getHash(new String(passwordField.getPassword()));
+                if (login.isEmpty() || pass.isEmpty()){
+                    return;
+                }else if (logicSystem.login(login, pass) != null){
+                    JFrame mainUI = new MainUI(logicSystem);
+                    Util.getInstance().centerFrame(mainUI);
+                    LoginUI.this.setVisible(false);
+                    mainUI.setVisible(true);
+                } else {
+                    alertMessage.setText("Invalid login/pass!");
+                }
                 break;
-            case CMD_REGESTRATION:
+            case CMD_REGISTRATION:
                 JFrame regFrame = new RegUI(logicSystem);
                 Util.getInstance().centerFrame(regFrame);
                 LoginUI.this.setVisible(false);
