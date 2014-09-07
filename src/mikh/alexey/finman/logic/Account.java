@@ -15,6 +15,9 @@ public class Account {
     private Set<Record> transList;
     private String accountDesc;
 
+    public Account(){
+    }
+
     public int getIdAcc() {
         return idAcc;
     }
