@@ -17,9 +17,6 @@ public class LogicSystem {
     private User currentUser;
     private Account currentAccount;
 
-    public static String[] avatarFilesList = new String[]{
-            "angry.png", "clown.png", "emo.png", "ninja.png", "santa.png", "sweating.png"};
-
     public LogicSystem(){
         dbData = new DbDataStore();
     }
@@ -28,6 +25,7 @@ public class LogicSystem {
         if (isUserExist(userLogin)){
             User user = dbData.getUser(userLogin);
             if (isPasswordCorrect(user, pass)){
+                logger.info("User: {} login in system.", userLogin);
                 setCurrentUser(user);
                 return user;
             }

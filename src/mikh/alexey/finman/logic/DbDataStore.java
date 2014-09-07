@@ -3,6 +3,7 @@ package mikh.alexey.finman.logic;
 import mikh.alexey.finman.helpers.DbHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,14 +51,14 @@ public class DbDataStore implements DataStore {
         PreparedStatement pStmt = null;
         ResultSet rs = null;
         try {
-            pStmt = dbHelper.getConn().prepareStatement("SELECT * FROM USERS WHERE NAME=?");
+            pStmt = dbHelper.getConn().prepareStatement("SELECT * FROM USERS WHERE LOGIN=?");
             pStmt.setString(1, name);
             rs = pStmt.executeQuery();
             while (rs.next()) {
                 String userName = rs.getString(1);
                 String pass = rs.getString(2);
                 String avatar = rs.getString(3);
-                user = new User();
+                user = new User(userName, pass, avatar);
                 user.setLogin(userName);
                 user.setPassword(pass);
                 user.setAvatarFileName(avatar);
@@ -80,7 +81,7 @@ public class DbDataStore implements DataStore {
         ResultSet rs = null;
         try {
             stmt = dbHelper.getConn().createStatement();
-            rs = stmt.executeQuery("SELECT NAME FROM USERS;");
+            rs = stmt.executeQuery("SELECT LOGIN FROM USERS;");
             while (rs.next()) {
                 String name = rs.getString(1);
                 names.add(name);
@@ -185,7 +186,7 @@ public class DbDataStore implements DataStore {
         try {
             pStmt = dbHelper.getConn().prepareStatement(
                     "INSERT INTO USERS (NAME, PASSWORD) " +
-                    "VALUES (?, ?, ?);");
+                            "VALUES (?, ?, ?);");
             pStmt.setString(1, user.getLogin());
             pStmt.setString(2, user.getPassword());
             pStmt.setString(3, user.getAvatarFileName());
@@ -206,7 +207,7 @@ public class DbDataStore implements DataStore {
         try {
             pStmt = dbHelper.getConn().prepareStatement(
                     "INSERT INTO ACCOUNTS (ACCOUNT_NAME, ACCOUNT_OWNER, BALANCE, DESCRIPTION) " +
-                    "VALUES (?, ?, ?, ?);");
+                            "VALUES (?, ?, ?, ?);");
             pStmt.setString(1, account.getNameAcc());
             pStmt.setString(2, user.getLogin());
             pStmt.setDouble(3, account.getCurBalance());
@@ -227,7 +228,7 @@ public class DbDataStore implements DataStore {
         try {
             pStmt = dbHelper.getConn().prepareStatement(
                     "INSERT INTO RECORDS (ACCOUNT_ID, OPERATION_AMOUNT, IS_ADD_TYPE, DESCRIPTION, CATEGORY_ID, OPERATION_DATE) " +
-                    "VALUES (?, ?, ?, ?, ?, ?);");
+                            "VALUES (?, ?, ?, ?, ?, ?);");
             pStmt.setInt(1, account.getIdAcc());
             pStmt.setDouble(2, record.getOperationAmount());
             pStmt.setInt(3, record.isAddOperation() ? 1 : 0);
@@ -245,16 +246,16 @@ public class DbDataStore implements DataStore {
 
     @Override
     public User removeUser(String name) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     @Override
     public Account removeAccount(User owner, Account account) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     @Override
     public Record removeRecord(Account from, Record record) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 }

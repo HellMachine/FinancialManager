@@ -54,7 +54,7 @@ public class MainUI extends JFrame implements ActionListener {
         addRecordButton.addActionListener(this);
 
         //temp data [must delete]
-        avatarImgLabel = new JLabel(Util.getInstance().createIcon(getClass(), "img/imgAvatar/" + logicSystem.avatarFilesList[0]));
+        avatarImgLabel = new JLabel(Util.getInstance().createIcon(getClass(), "img/imgAvatar/" + RegUI.avatarFilesList[0]));
         currentUserLabel = new JLabel("HellMachine");
         currentUserLabel.setForeground(Color.RED);
         currentBalanceLabel = new JLabel("35000 RUB");
