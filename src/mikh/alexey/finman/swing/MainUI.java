@@ -33,14 +33,12 @@ public class MainUI extends JFrame implements ActionListener {
 
     private JLabel avatarImgLabel;
     private JLabel currentUserLabel;
-    private JLabel currentBalanceLabel;
     private JLabel userNameLabel = new JLabel("User: ");
     private JLabel balanceLabel = new JLabel("Balance: ");
     private JLabel accountLabel = new JLabel("Account: ");
     private JComboBox accountList;
     private DefaultListModel<Record> recordsListModel;
     private JButton addRecordButton = new JButton("Add Record");
-    private JPanel userPanel = new JPanel();
     private JPanel recordPanel = new JPanel();
     private JPanel mainPanel = new JPanel();
 
@@ -55,11 +53,11 @@ public class MainUI extends JFrame implements ActionListener {
 
         this.logicSystem = logicSystem;
 
-        avatarImgLabel = new JLabel(Util.getInstance().createIcon(getClass(), "img/imgAvatar/" + logicSystem.getCurrentUser().getAvatarFileName()));
-        currentUserLabel = new JLabel(logicSystem.getCurrentUser().getLogin());
-        currentUserLabel.setForeground(Color.RED);
-        //temp data [must delete]
-        currentBalanceLabel = new JLabel("35000 RUB");
+        recordsListModel = new DefaultListModel<>();
+        JList<Record> listRecords = new JList<>();
+        listRecords.setCellRenderer(new RecordView());
+        listRecords.setModel(recordsListModel);
+        listRecords.setLayoutOrientation(JList.VERTICAL);
 
         final DefaultComboBoxModel<Account> modelComboBox = new DefaultComboBoxModel<>();
         for (Account acc : logicSystem.getAccounts(logicSystem.getCurrentUser())) {
@@ -71,7 +69,7 @@ public class MainUI extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 Account account = (Account)modelComboBox.getSelectedItem();
                 logicSystem.setCurrentAccount(account);
-                viewRecords(account);
+                //viewRecords(account);
             }
         });
 
@@ -81,17 +79,36 @@ public class MainUI extends JFrame implements ActionListener {
             viewRecords(curAccount);
         }
 
-        addRecordButton.setActionCommand(CMD_ADD_RECORD);
-        addRecordButton.addActionListener(this);
+        recordPanel.setBorder(BorderFactory.createTitledBorder("Records"));
+        recordPanel.setLayout(new BorderLayout());
+        recordPanel.add(new JScrollPane(listRecords), BorderLayout.CENTER);
 
-        recordsListModel = new DefaultListModel<>();
-        JList<Record> listRecords = new JList<>();
-        listRecords.setCellRenderer(new RecordView());
-        listRecords.setModel(recordsListModel);
-        listRecords.setLayoutOrientation(JList.VERTICAL);
+        mainPanel.setLayout(new BorderLayout());
 
+        setJMenuBar(addMenu());
+        mainPanel.add(createUserPanel(curAccount), BorderLayout.NORTH);
+        mainPanel.add(recordPanel, BorderLayout.CENTER);
+        setContentPane(mainPanel);
+
+    }
+
+    public JPanel createUserPanel(Account account){
+        JPanel userPanel = new JPanel();
         userPanel.setBorder(BorderFactory.createTitledBorder("User data"));
         userPanel.setLayout(new GridBagLayout());
+
+        avatarImgLabel = new JLabel(Util.getInstance().createIcon(getClass(), "img/imgAvatar/" + logicSystem.getCurrentUser().getAvatarFileName()));
+        currentUserLabel = new JLabel(logicSystem.getCurrentUser().getLogin());
+        currentUserLabel.setForeground(Color.RED);
+
+        JLabel currentBalanceLabel = new JLabel();
+        if (account != null){
+            Double accountBalance = account.getCurBalance();
+            currentBalanceLabel.setText(accountBalance + " RUB");
+        }
+
+        addRecordButton.setActionCommand(CMD_ADD_RECORD);
+        addRecordButton.addActionListener(this);
 
         userPanel.add(avatarImgLabel, new GridBagConstraints(0, 0, 2, 2, 1, 1,
                 GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
@@ -117,18 +134,7 @@ public class MainUI extends JFrame implements ActionListener {
         userPanel.add(addRecordButton, new GridBagConstraints(5, 1, 1, 1, 1, 1,
                 GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
                 new Insets(2, 2, 2, 2), 0, 0));
-
-        recordPanel.setBorder(BorderFactory.createTitledBorder("Records"));
-        recordPanel.setLayout(new BorderLayout());
-        recordPanel.add(new JScrollPane(listRecords), BorderLayout.CENTER);
-
-        mainPanel.setLayout(new BorderLayout());
-
-        setJMenuBar(addMenu());
-        mainPanel.add(userPanel, BorderLayout.NORTH);
-        mainPanel.add(recordPanel, BorderLayout.CENTER);
-        setContentPane(mainPanel);
-
+        return userPanel;
     }
 
     private void viewRecords(Account curAccount) {
