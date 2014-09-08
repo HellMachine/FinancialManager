@@ -20,19 +20,18 @@ public class RecordView implements ListCellRenderer<Record> {
 
         JPanel recordViewPanel = new JPanel();
         recordViewPanel.setLayout(new BorderLayout());
-        recordViewPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        recordViewPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
         if(value != null){
-            JLabel transInfo = new JLabel(value.getOperationAmount() + " RUB " + value.getOperationCat().getCategoryName()
-                                          + " " + value.getOperationDate());
+            JLabel transAmount = new JLabel(value.getOperationAmount() + " RUB");
+            JLabel transInfo = new JLabel(value.getOperationCat().getCategoryName() + " " + value.getOperationDate());
             JLabel transDesc = new JLabel(value.getOperationDesc());
             JLabel transImage = (value.isAddOperation() ? plusImageLabel : minusImageLabel);
-            recordViewPanel.add(transInfo, BorderLayout.NORTH);
-            recordViewPanel.add(transDesc, BorderLayout.CENTER);
-            recordViewPanel.add(transImage, BorderLayout.WEST);
+            recordViewPanel.add(transAmount, BorderLayout.NORTH);
+            recordViewPanel.add(transInfo, BorderLayout.CENTER);
+            recordViewPanel.add(transDesc, BorderLayout.SOUTH);
+            recordViewPanel.add(transImage, BorderLayout.EAST);
         }
-
-
         return recordViewPanel;
     }
 }
