@@ -10,7 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 
 /**
  * @author lxmikh@gmail.com
@@ -27,9 +26,9 @@ public class RecordDialog extends JDialog implements ActionListener {
     private static final String CMD_CANCEL = "cmdCancelAction";
 
     private JTextField amountField = new JTextField(10);
-    private JTextArea recordDescripton = new JTextArea(5, 5);
+    private JTextArea recordDescription = new JTextArea(5, 5);
     private JComboBox<Category> categoryList;
-    private boolean isRefill = false;
+    private boolean isRefill = true;
 
     private LogicSystem logicSystem;
 
@@ -53,7 +52,7 @@ public class RecordDialog extends JDialog implements ActionListener {
             refillRadioButton.setEnabled(false);
             withdrawRadioButton.setEnabled(false);
             amountField.setEnabled(false);
-            recordDescripton.setEnabled(false);
+            recordDescription.setEnabled(false);
             categoryList.setEnabled(false);
             addButton.setEnabled(false);
         }
@@ -78,20 +77,33 @@ public class RecordDialog extends JDialog implements ActionListener {
             }
         });
 
-        JScrollPane descPane = new JScrollPane(recordDescripton);
+        JScrollPane descPane = new JScrollPane(recordDescription);
         descPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         descPane.setAlignmentX(LEFT_ALIGNMENT);
-        recordDescripton.setLineWrap(true);
+        recordDescription.setLineWrap(true);
 
         ButtonGroup refillWithdrawGroup = new ButtonGroup();
         refillWithdrawGroup.add(refillRadioButton);
         refillWithdrawGroup.add(withdrawRadioButton);
         refillRadioButton.setSelected(true);
 
-        refillRadioButton.setActionCommand(CMD_REFILL_RB);
+        /*refillRadioButton.setActionCommand(CMD_REFILL_RB);
         refillRadioButton.addActionListener(this);
         withdrawRadioButton.setActionCommand(CMD_WITHDRAW_RB);
-        withdrawRadioButton.addActionListener(this);
+        withdrawRadioButton.addActionListener(this);*/
+
+        refillRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                isRefill = true;
+            }
+        });
+        withdrawRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                isRefill = false;
+            }
+        });
         addButton.setActionCommand(CMD_ADD);
         addButton.addActionListener(this);
         deleteButton.setActionCommand(CMD_DELETE);
@@ -156,26 +168,28 @@ public class RecordDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
         switch (cmd) {
-            case CMD_REFILL_RB:
+            /*case CMD_REFILL_RB:
                 isRefill = true;
                 break;
             case CMD_WITHDRAW_RB:
                 isRefill = false;
-                break;
+                break;*/
             case CMD_ADD:
                 boolean isAddOperation = isRefill;
                 //FIXME возможная ошибка на ввод данных в поле amountField!
                 Double amountOperation = new Double(amountField.getText());
                 Category categorySelect = (Category) categoryList.getSelectedItem();
-                String descOperation = recordDescripton.getText();
-                Date dateOperation = new java.sql.Date(System.currentTimeMillis());
+                String descOperation = recordDescription.getText();
+                String operationDate = (new java.util.Date(System.currentTimeMillis())).toString();
+
                 Record newRecord = new Record();
                 newRecord.setAddOperation(isAddOperation);
                 newRecord.setOperationAmount(amountOperation);
                 newRecord.setOperationCat(categorySelect);
                 newRecord.setOperationDesc(descOperation);
-                newRecord.setOperationDate(dateOperation);
+                newRecord.setOperationDate(operationDate);
                 logicSystem.addRecord(logicSystem.getCurrentAccount(), newRecord);
+
                 dispose();
                 break;
             case CMD_DELETE:
