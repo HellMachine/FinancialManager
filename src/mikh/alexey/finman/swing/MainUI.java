@@ -1,7 +1,9 @@
 package mikh.alexey.finman.swing;
 
 import mikh.alexey.finman.helpers.Util;
+import mikh.alexey.finman.logic.Account;
 import mikh.alexey.finman.logic.LogicSystem;
+import mikh.alexey.finman.logic.Record;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 
 /**
  * @author lxmikh@gmail.com
@@ -34,15 +37,17 @@ public class MainUI extends JFrame implements ActionListener {
     private JLabel userNameLabel = new JLabel("User: ");
     private JLabel balanceLabel = new JLabel("Balance: ");
     private JLabel accountLabel = new JLabel("Account: ");
-    private JComboBox accountList = new JComboBox();
+    private JComboBox accountList;
+    private DefaultListModel<Record> recordsListModel;
     private JButton addRecordButton = new JButton("Add Record");
     private JPanel userPanel = new JPanel();
     private JPanel recordPanel = new JPanel();
     private JPanel mainPanel = new JPanel();
 
     private LogicSystem logicSystem;
+    private Account curAccount;
 
-    public MainUI(LogicSystem logicSystem) {
+    public MainUI(final LogicSystem logicSystem) {
         super("Financial Manager");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(400, 600);
@@ -50,14 +55,40 @@ public class MainUI extends JFrame implements ActionListener {
 
         this.logicSystem = logicSystem;
 
+        avatarImgLabel = new JLabel(Util.getInstance().createIcon(getClass(), "img/imgAvatar/" + logicSystem.getCurrentUser().getAvatarFileName()));
+        currentUserLabel = new JLabel(logicSystem.getCurrentUser().getLogin());
+        currentUserLabel.setForeground(Color.RED);
+        //temp data [must delete]
+        currentBalanceLabel = new JLabel("35000 RUB");
+
+        final DefaultComboBoxModel<Account> modelComboBox = new DefaultComboBoxModel<>();
+        for (Account acc : logicSystem.getAccounts(logicSystem.getCurrentUser())) {
+            modelComboBox.addElement(acc);
+        }
+        accountList = new JComboBox<>(modelComboBox);
+        accountList.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Account account = (Account)modelComboBox.getSelectedItem();
+                logicSystem.setCurrentAccount(account);
+                viewRecords(account);
+            }
+        });
+
+        if ((curAccount = modelComboBox.getElementAt(0)) != null) {
+            logicSystem.setCurrentAccount(curAccount);
+            accountList.setSelectedIndex(0);
+            viewRecords(curAccount);
+        }
+
         addRecordButton.setActionCommand(CMD_ADD_RECORD);
         addRecordButton.addActionListener(this);
 
-        //temp data [must delete]
-        avatarImgLabel = new JLabel(Util.getInstance().createIcon(getClass(), "img/imgAvatar/" + RegUI.avatarFilesList[0]));
-        currentUserLabel = new JLabel("HellMachine");
-        currentUserLabel.setForeground(Color.RED);
-        currentBalanceLabel = new JLabel("35000 RUB");
+        recordsListModel = new DefaultListModel<>();
+        JList<Record> listRecords = new JList<>();
+        listRecords.setCellRenderer(new RecordView());
+        listRecords.setModel(recordsListModel);
+        listRecords.setLayoutOrientation(JList.VERTICAL);
 
         userPanel.setBorder(BorderFactory.createTitledBorder("User data"));
         userPanel.setLayout(new GridBagLayout());
@@ -89,7 +120,7 @@ public class MainUI extends JFrame implements ActionListener {
 
         recordPanel.setBorder(BorderFactory.createTitledBorder("Records"));
         recordPanel.setLayout(new BorderLayout());
-        recordPanel.add(new JScrollPane(), BorderLayout.CENTER);
+        recordPanel.add(new JScrollPane(listRecords), BorderLayout.CENTER);
 
         mainPanel.setLayout(new BorderLayout());
 
@@ -98,6 +129,14 @@ public class MainUI extends JFrame implements ActionListener {
         mainPanel.add(recordPanel, BorderLayout.CENTER);
         setContentPane(mainPanel);
 
+    }
+
+    private void viewRecords(Account curAccount) {
+        //recordsListModel.clear();
+        Set<Record> records = logicSystem.getRecords(curAccount);
+        for (Record record : records) {
+            recordsListModel.addElement(record);
+        }
     }
 
     public JMenuBar addMenu() {
@@ -175,6 +214,7 @@ public class MainUI extends JFrame implements ActionListener {
                 Util.getInstance().centerFrame(rDialog);
                 rDialog.setModal(true);
                 rDialog.setVisible(true);
+                viewRecords(logicSystem.getCurrentAccount());
                 break;
             case CMD_RELOGIN:
                 Util.getInstance().reLogin(MainUI.this);
@@ -197,8 +237,8 @@ public class MainUI extends JFrame implements ActionListener {
             case CMD_ABOUT:
                 JOptionPane.showOptionDialog(getComponent(0),
                         "Financial manager \n ver.00001a \n " +
-                                "IdeaAuthor: Dmitriy Archangelskiy \n " +
-                                "ReleaseAuthor: Alexey Mikhaylyuk",
+                                "Idea: Dmitriy Archangelskiy \n " +
+                                "Releaser: Alexey Mikhaylyuk",
                         "About",
                         JOptionPane.DEFAULT_OPTION,
                         JOptionPane.INFORMATION_MESSAGE,
