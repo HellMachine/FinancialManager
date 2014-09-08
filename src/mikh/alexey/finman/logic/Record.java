@@ -1,7 +1,5 @@
 package mikh.alexey.finman.logic;
 
-import java.util.Date;
-
 /**
  * @author lxmikh@gmail.com
  */
@@ -12,7 +10,7 @@ public class Record {
     private boolean isAddOperation;
     private String operationDesc;
     private Category operationCat;
-    private Date operationDate;
+    private String operationDate;
 
     public void setOperationAmount(double operationAmount) {
         this.operationAmount = operationAmount;
@@ -46,11 +44,11 @@ public class Record {
         return operationCat;
     }
 
-    public void setOperationDate(Date operationDate) {
+    public void setOperationDate(String operationDate) {
         this.operationDate = operationDate;
     }
 
-    public Date getOperationDate() {
+    public String getOperationDate() {
         return operationDate;
     }
 

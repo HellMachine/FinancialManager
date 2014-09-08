@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -137,11 +136,11 @@ public class DbDataStore implements DataStore {
                 Record record = new Record();
                 record.setOperationAmount(rs.getDouble(rs.findColumn("OPERATION_AMOUNT")));
                 int isAdditionType = rs.getInt(rs.findColumn("IS_ADD_TYPE"));
-                record.setAddOperation(isAdditionType == 1);
+                record.setAddOperation(isAdditionType == 0 ? false:true);
                 record.setOperationDesc(rs.getString(rs.findColumn("DESCRIPTION")));
                 int categoryId = (rs.getInt(rs.findColumn("CATEGORY_ID")));
                 record.setOperationCat(getCategoryById(categoryId));
-                Date recordDate = (rs.getDate(rs.findColumn("OPERATION_DATE")));
+                String recordDate = rs.getString(rs.findColumn("OPERATION_DATE"));
                 record.setOperationDate(recordDate);
                 records.add(record);
             }
