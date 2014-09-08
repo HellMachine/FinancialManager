@@ -1,0 +1,1 @@
+insert OR REPLACE into Categories (CATEGORY_NAME) values ("Food and Drinks"), ("Cafe"), ("Transport"), ("Health"), ("Other"), ("Salary");
