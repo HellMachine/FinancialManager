@@ -1,6 +1,8 @@
 package mikh.alexey.finman.swing;
 
+import mikh.alexey.finman.logic.Account;
 import mikh.alexey.finman.logic.LogicSystem;
+import mikh.alexey.finman.logic.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,6 +103,20 @@ public class AccountDialog extends JDialog implements ActionListener {
         String cmd = e.getActionCommand();
         switch (cmd){
             case CMD_ADD_ACTION:
+                User curUser = logicSystem.getCurrentUser();
+                String accountName = accountNameField.getText();
+                Double balance = new Double(accountBalanceField.getText());
+                String accountDesc = accountDescripton.getText();
+                boolean accountDataReady = accountName.isEmpty() || accountDesc.isEmpty();// || accountBalanceField.getText().isEmpty();
+
+                if (accountDataReady) {
+                    Account newAccount = new Account();
+                    newAccount.setNameAcc(accountName);
+                    newAccount.setCurBalance(balance);
+                    newAccount.setAccountDesc(accountDesc);
+                    logicSystem.addAccount(curUser, newAccount);
+                    logger.info("New account - {} created success. Owner - {}", accountName, curUser);
+                }
                 dispose();
                 break;
             case CMD_EDIT_ACTION:
