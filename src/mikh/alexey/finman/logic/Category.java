@@ -25,4 +25,8 @@ public class Category {
         return categoryName;
     }
 
+    public String toString(){
+        return categoryName;
+    }
+
 }

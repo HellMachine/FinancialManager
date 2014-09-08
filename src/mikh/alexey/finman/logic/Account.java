@@ -66,4 +66,8 @@ public class Account {
         this.accountDesc = accountDesc;
     }
 
+    public String toString(){
+        return nameAcc;
+    }
+
 }

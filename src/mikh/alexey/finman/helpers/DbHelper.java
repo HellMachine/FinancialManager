@@ -43,6 +43,10 @@ public class DbHelper {
                 Statement stmt = conn.createStatement();
                 String createSql = readResource(DbHelper.class, "create_tables.sql");
                 stmt.executeUpdate(createSql);
+
+                String insertSql = readResource(DbHelper.class, "insert.sql");
+                stmt.executeUpdate(insertSql);
+
                 stmt.close();
             }
         } catch (Exception e) {

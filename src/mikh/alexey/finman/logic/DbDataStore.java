@@ -185,13 +185,13 @@ public class DbDataStore implements DataStore {
         PreparedStatement pStmt = null;
         try {
             pStmt = dbHelper.getConn().prepareStatement(
-                    "INSERT INTO USERS (NAME, PASSWORD) " +
+                    "INSERT INTO USERS (LOGIN, PASSWORD, USER_AVATAR) " +
                             "VALUES (?, ?, ?);");
             pStmt.setString(1, user.getLogin());
             pStmt.setString(2, user.getPassword());
             pStmt.setString(3, user.getAvatarFileName());
             int result = pStmt.executeUpdate();
-            logger.info("Add user " + user + ": " + result);
+            logger.info("Add user " + user.getLogin() + ": " + result);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -213,7 +213,7 @@ public class DbDataStore implements DataStore {
             pStmt.setDouble(3, account.getCurBalance());
             pStmt.setString(4, account.getAccountDesc());
             int result = pStmt.executeUpdate();
-            logger.info("Add account " + account + ": " + result);
+            logger.info("Add account " + account.getNameAcc() + ": " + result);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
