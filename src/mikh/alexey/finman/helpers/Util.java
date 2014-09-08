@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -18,20 +19,20 @@ import java.security.NoSuchAlgorithmException;
 public class Util {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
-
-    private LogicSystem logicSystem;
+    private String[] listFiles;
 
     public static Util instance = new Util();
 
-    private Util(){
+    private Util() {
     }
 
-    public static Util getInstance(){
+    public static Util getInstance() {
         return instance;
     }
 
-    public void reLogin(JFrame frame){
+    public void reLogin(JFrame frame) {
         frame.setVisible(false);
+        LogicSystem logicSystem = new LogicSystem();
         JFrame loginFrame = new LoginUI(logicSystem);
         Util.getInstance().centerFrame(loginFrame);
         loginFrame.setVisible(true);
@@ -74,8 +75,8 @@ public class Util {
 
             byte messageDigest[] = md5.digest();
 
-            for (int i = 0; i < messageDigest.length; i++) {
-                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            for (byte aMessageDigest : messageDigest) {
+                hexString.append(Integer.toHexString(0xFF & aMessageDigest));
             }
         } catch (NoSuchAlgorithmException e) {
             return e.toString();
@@ -84,12 +85,23 @@ public class Util {
         return hexString.toString();
     }
 
-    public File[] getAvatarFilesList(String path){
+    public String[] fillFileList() {
 
-        File[] filesInAvatarFolder;
-        File dir = new File(path);
-        filesInAvatarFolder = dir.listFiles();
+        try {
+            ClassLoader cl = Util.class.getClassLoader();
+            URL resource = cl.getResource("mikh/alexey/finman/swing/img/imgAvatar/");
+            char[] values = resource.getPath().toCharArray();
+            String path = new String(values, 1, values.length - 1);
 
-        return filesInAvatarFolder;
+            File dir = new File(path);
+            File[] filesInDir = dir.listFiles();
+            listFiles = new String[filesInDir.length];
+            for (int i = 0; i < filesInDir.length; i++) {
+                listFiles[i] = filesInDir[i].getName();
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+        return listFiles;
     }
 }
