@@ -2,6 +2,7 @@ package mikh.alexey.finman.swing;
 
 import mikh.alexey.finman.logic.Category;
 import mikh.alexey.finman.logic.LogicSystem;
+import mikh.alexey.finman.logic.Record;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 
 /**
  * @author lxmikh@gmail.com
@@ -24,37 +26,30 @@ public class RecordDialog extends JDialog implements ActionListener {
     private static final String CMD_DELETE = "cmdDeleteRecord";
     private static final String CMD_CANCEL = "cmdCancelAction";
 
-    private JRadioButton refillRadioButton = new JRadioButton("Plus");
-    private JRadioButton withdrawRadioButton = new JRadioButton("Minus");
-    private JLabel amountLabel = new JLabel("Amount:");
-    private JLabel categoryLabel = new JLabel("Category:");
-    private JLabel recordDescLabel = new JLabel("Description:");
-    private JLabel confirmMessageLabel = new JLabel("I agree to the deletion of a record.");
     private JTextField amountField = new JTextField(10);
     private JTextArea recordDescripton = new JTextArea(5, 5);
-    private JScrollPane descPane = new JScrollPane(recordDescripton);
-    private JCheckBox confirmCheckBox = new JCheckBox();
-    private JButton addButton = new JButton("Add");
-    private JButton deleteButton = new JButton("Delete");
-    private JButton cancelButton = new JButton("Cancel");
-    private JPanel recordPanel = new JPanel();
     private JComboBox<Category> categoryList;
     private boolean isRefill = false;
-    private boolean isAddAction = false;
-    private boolean isDeleteAction = false;
 
     private LogicSystem logicSystem;
 
-    public RecordDialog(LogicSystem logicSystem, boolean isAddAction, boolean isDeleteAction){
+    public RecordDialog(LogicSystem logicSystem, boolean isAddAction, boolean isDeleteAction) {
         super();
         setTitle("Add/delete record");
         this.logicSystem = logicSystem;
-        this.isAddAction = isAddAction;
-        this.isDeleteAction = isDeleteAction;
+        boolean addAction = isAddAction;
+        boolean deleteAction = isDeleteAction;
 
         categoryList = new JComboBox<>();
 
-        if (!isAddAction){
+        JRadioButton refillRadioButton = new JRadioButton("Plus");
+        JRadioButton withdrawRadioButton = new JRadioButton("Minus");
+
+        JButton addButton = new JButton("Add");
+        JButton deleteButton = new JButton("Delete");
+        JButton cancelButton = new JButton("Cancel");
+
+        if (!isAddAction) {
             refillRadioButton.setEnabled(false);
             withdrawRadioButton.setEnabled(false);
             amountField.setEnabled(false);
@@ -62,11 +57,28 @@ public class RecordDialog extends JDialog implements ActionListener {
             categoryList.setEnabled(false);
             addButton.setEnabled(false);
         }
-        if (!isDeleteAction){
+        JCheckBox confirmCheckBox = new JCheckBox();
+
+        if (!isDeleteAction) {
             confirmCheckBox.setEnabled(false);
             deleteButton.setEnabled(false);
         }
 
+        DefaultComboBoxModel<Category> modelComboBox = new DefaultComboBoxModel<>();
+        for (Category categoryName : logicSystem.getCategories()) {
+            modelComboBox.addElement(categoryName);
+        }
+        categoryList = new JComboBox<>(modelComboBox);
+        categoryList.setSelectedIndex(0);
+
+        categoryList.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                logger.info("Category chosen: {}", categoryList.getSelectedItem());
+            }
+        });
+
+        JScrollPane descPane = new JScrollPane(recordDescripton);
         descPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         descPane.setAlignmentX(LEFT_ALIGNMENT);
         recordDescripton.setLineWrap(true);
@@ -87,6 +99,7 @@ public class RecordDialog extends JDialog implements ActionListener {
         cancelButton.setActionCommand(CMD_CANCEL);
         cancelButton.addActionListener(this);
 
+        JPanel recordPanel = new JPanel();
         recordPanel.setLayout(new GridBagLayout());
 
         recordPanel.add(refillRadioButton, new GridBagConstraints(0, 0, 1, 1, 1, 1,
@@ -95,24 +108,28 @@ public class RecordDialog extends JDialog implements ActionListener {
         recordPanel.add(withdrawRadioButton, new GridBagConstraints(1, 0, 1, 1, 1, 1,
                 GridBagConstraints.NORTH, GridBagConstraints.CENTER,
                 new Insets(2, 2, 2, 2), 0, 0));
+        JLabel amountLabel = new JLabel("Amount:");
         recordPanel.add(amountLabel, new GridBagConstraints(0, 1, 1, 1, 1, 1,
                 GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
                 new Insets(2, 2, 2, 2), 0, 0));
         recordPanel.add(amountField, new GridBagConstraints(1, 1, 2, 1, 1, 1,
                 GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
                 new Insets(2, 2, 2, 2), 0, 0));
+        JLabel categoryLabel = new JLabel("Category:");
         recordPanel.add(categoryLabel, new GridBagConstraints(0, 2, 1, 1, 1, 1,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(2, 2, 2, 2), 0, 0));
         recordPanel.add(categoryList, new GridBagConstraints(1, 2, 2, 1, 1, 1,
                 GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
                 new Insets(2, 2, 2, 2), 0, 0));
+        JLabel recordDescLabel = new JLabel("Description:");
         recordPanel.add(recordDescLabel, new GridBagConstraints(0, 3, 1, 1, 1, 1,
                 GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
                 new Insets(2, 2, 2, 2), 0, 0));
         recordPanel.add(descPane, new GridBagConstraints(0, 4, 3, 1, 1, 1,
                 GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
                 new Insets(2, 2, 2, 2), 0, 0));
+        JLabel confirmMessageLabel = new JLabel("I agree to the deletion of a record.");
         recordPanel.add(confirmMessageLabel, new GridBagConstraints(0, 5, 2, 1, 1, 1,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(2, 2, 2, 2), 0, 0));
@@ -138,7 +155,7 @@ public class RecordDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
-        switch (cmd){
+        switch (cmd) {
             case CMD_REFILL_RB:
                 isRefill = true;
                 break;
@@ -146,10 +163,25 @@ public class RecordDialog extends JDialog implements ActionListener {
                 isRefill = false;
                 break;
             case CMD_ADD:
+                boolean isAddOperation = isRefill;
+                //FIXME возможная ошибка на ввод данных в поле amountField!
+                Double amountOperation = new Double(amountField.getText());
+                Category categorySelect = (Category) categoryList.getSelectedItem();
+                String descOperation = recordDescripton.getText();
+                Date dateOperation = new java.sql.Date(System.currentTimeMillis());
+                Record newRecord = new Record();
+                newRecord.setAddOperation(isAddOperation);
+                newRecord.setOperationAmount(amountOperation);
+                newRecord.setOperationCat(categorySelect);
+                newRecord.setOperationDesc(descOperation);
+                newRecord.setOperationDate(dateOperation);
+                logicSystem.addRecord(logicSystem.getCurrentAccount(), newRecord);
+                dispose();
                 break;
             case CMD_DELETE:
                 break;
             case CMD_CANCEL:
+                dispose();
                 break;
         }
 
