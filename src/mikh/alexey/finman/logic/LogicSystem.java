@@ -17,14 +17,14 @@ public class LogicSystem {
     private User currentUser;
     private Account currentAccount;
 
-    public LogicSystem(){
+    public LogicSystem() {
         dbData = new DbDataStore();
     }
 
-    public User login(String userLogin, String pass){
-        if (isUserExist(userLogin)){
+    public User login(String userLogin, String pass) {
+        if (isUserExist(userLogin)) {
             User user = dbData.getUser(userLogin);
-            if (isPasswordCorrect(user, pass)){
+            if (isPasswordCorrect(user, pass)) {
                 logger.info("User: {} login in system.", userLogin);
                 setCurrentUser(user);
                 return user;
@@ -33,8 +33,8 @@ public class LogicSystem {
         return null;
     }
 
-    public User createNewUser(String userLogin, String pass, String avatar){
-        if (!isUserExist(userLogin)){
+    public User createNewUser(String userLogin, String pass, String avatar) {
+        if (!isUserExist(userLogin)) {
             User user = new User(userLogin, pass, avatar);
             dbData.addUser(user);
             return user;
@@ -50,7 +50,7 @@ public class LogicSystem {
         return currentUser;
     }
 
-    public boolean isUserExist(String userLogin){
+    public boolean isUserExist(String userLogin) {
         return dbData.getUser(userLogin) != null;
     }
 
@@ -66,11 +66,11 @@ public class LogicSystem {
         return currentAccount;
     }
 
-    public void addAccount(User userLogin, Account account){
+    public void addAccount(User userLogin, Account account) {
         dbData.addAccount(userLogin, account);
     }
 
-    public Set<Account> getAccounts(User userLogin){
+    public Set<Account> getAccounts(User userLogin) {
         return dbData.getAccounts(userLogin);
     }
 

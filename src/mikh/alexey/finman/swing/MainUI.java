@@ -39,7 +39,6 @@ public class MainUI extends JFrame implements ActionListener {
     private JButton addRecordButton = new JButton("Add Record");
 
     private LogicSystem logicSystem;
-    private Account curAccount;
 
     public MainUI(final LogicSystem logicSystem) {
         super("Financial Manager");
@@ -63,12 +62,13 @@ public class MainUI extends JFrame implements ActionListener {
         accountList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Account account = (Account)modelComboBox.getSelectedItem();
+                Account account = (Account) modelComboBox.getSelectedItem();
                 logicSystem.setCurrentAccount(account);
                 viewRecords(account);
             }
         });
 
+        Account curAccount;
         if ((curAccount = modelComboBox.getElementAt(0)) != null) {
             logicSystem.setCurrentAccount(curAccount);
             accountList.setSelectedIndex(0);
@@ -90,7 +90,7 @@ public class MainUI extends JFrame implements ActionListener {
 
     }
 
-    public JPanel createUserPanel(Account account){
+    public JPanel createUserPanel(Account account) {
         JPanel userPanel = new JPanel();
         userPanel.setBorder(BorderFactory.createTitledBorder("User data"));
         userPanel.setLayout(new GridBagLayout());
@@ -100,7 +100,7 @@ public class MainUI extends JFrame implements ActionListener {
         currentUserLabel.setForeground(Color.RED);
 
         JLabel currentBalanceLabel = new JLabel();
-        if (account != null){
+        if (account != null) {
             Double accountBalance = account.getCurBalance();
             currentBalanceLabel.setText(accountBalance + " RUB");
         }
@@ -218,7 +218,7 @@ public class MainUI extends JFrame implements ActionListener {
                 Util.getInstance().centerFrame(rDialog);
                 rDialog.setModal(true);
                 rDialog.setVisible(true);
-                viewRecords(curAccount);
+                viewRecords(logicSystem.getCurrentAccount());
                 break;
             case CMD_RELOGIN:
                 Util.getInstance().reLogin(MainUI.this);

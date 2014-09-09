@@ -32,7 +32,7 @@ public class RegUI extends JFrame implements ActionListener {
     private JComboBox avatarList;
 
     private LogicSystem logicSystem;
-    public  String[] avatarFilesList;
+    public String[] avatarFilesList;
 
     public RegUI(LogicSystem logicSystem) {
         super("New user");

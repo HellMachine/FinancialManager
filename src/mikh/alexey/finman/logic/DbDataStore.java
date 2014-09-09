@@ -136,7 +136,7 @@ public class DbDataStore implements DataStore {
                 Record record = new Record();
                 record.setOperationAmount(rs.getDouble(rs.findColumn("OPERATION_AMOUNT")));
                 int isAdditionType = rs.getInt(rs.findColumn("IS_ADD_TYPE"));
-                record.setAddOperation(isAdditionType == 0 ? false:true);
+                record.setAddOperation(isAdditionType == 0 ? false : true);
                 record.setOperationDesc(rs.getString(rs.findColumn("DESCRIPTION")));
                 int categoryId = (rs.getInt(rs.findColumn("CATEGORY_ID")));
                 record.setOperationCat(getCategoryById(categoryId));

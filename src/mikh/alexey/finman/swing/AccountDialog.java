@@ -104,21 +104,21 @@ public class AccountDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
-        switch (cmd){
+        switch (cmd) {
             case CMD_ADD_ACTION:
                 User curUser = logicSystem.getCurrentUser();
                 String accountName = accountNameField.getText();
                 Double balance = new Double(accountBalanceField.getText());
                 String accountDesc = accountDescripton.getText();
-                boolean accountDataReady = accountName.isEmpty() || accountDesc.isEmpty();// || accountBalanceField.getText().isEmpty();
+                //boolean accountDataReady = accountName.isEmpty() || accountDesc.isEmpty();// || accountBalanceField.getText().isEmpty();
 
                 //if (accountDataReady) {
-                    Account newAccount = new Account();
-                    newAccount.setNameAcc(accountName);
-                    newAccount.setCurBalance(balance);
-                    newAccount.setAccountDesc(accountDesc);
-                    logicSystem.addAccount(curUser, newAccount);
-                    logger.info("New account - {} created success. Owner - {}", accountName, curUser.getLogin());
+                Account newAccount = new Account();
+                newAccount.setNameAcc(accountName);
+                newAccount.setCurBalance(balance);
+                newAccount.setAccountDesc(accountDesc);
+                logicSystem.addAccount(curUser, newAccount);
+                logger.info("New account - {} created success. Owner - {}", accountName, curUser);
                 //}
                 dispose();
                 break;
