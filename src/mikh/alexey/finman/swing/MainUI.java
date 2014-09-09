@@ -31,16 +31,12 @@ public class MainUI extends JFrame implements ActionListener {
     private static final String CMD_SETTINGS = "cmdSettings";
     private static final String CMD_ABOUT = "cmdAbout";
 
-    private JLabel avatarImgLabel;
-    private JLabel currentUserLabel;
     private JLabel userNameLabel = new JLabel("User: ");
     private JLabel balanceLabel = new JLabel("Balance: ");
     private JLabel accountLabel = new JLabel("Account: ");
     private JComboBox accountList;
     private DefaultListModel<Record> recordsListModel;
     private JButton addRecordButton = new JButton("Add Record");
-    private JPanel recordPanel = new JPanel();
-    private JPanel mainPanel = new JPanel();
 
     private LogicSystem logicSystem;
     private Account curAccount;
@@ -69,7 +65,7 @@ public class MainUI extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 Account account = (Account)modelComboBox.getSelectedItem();
                 logicSystem.setCurrentAccount(account);
-                //viewRecords(account);
+                viewRecords(account);
             }
         });
 
@@ -79,10 +75,12 @@ public class MainUI extends JFrame implements ActionListener {
             viewRecords(curAccount);
         }
 
+        JPanel recordPanel = new JPanel();
         recordPanel.setBorder(BorderFactory.createTitledBorder("Records"));
         recordPanel.setLayout(new BorderLayout());
         recordPanel.add(new JScrollPane(listRecords), BorderLayout.CENTER);
 
+        JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
         setJMenuBar(addMenu());
@@ -97,8 +95,8 @@ public class MainUI extends JFrame implements ActionListener {
         userPanel.setBorder(BorderFactory.createTitledBorder("User data"));
         userPanel.setLayout(new GridBagLayout());
 
-        avatarImgLabel = new JLabel(Util.getInstance().createIcon(getClass(), "img/imgAvatar/" + logicSystem.getCurrentUser().getAvatarFileName()));
-        currentUserLabel = new JLabel(logicSystem.getCurrentUser().getLogin());
+        JLabel avatarImgLabel = new JLabel(Util.getInstance().createIcon(getClass(), "img/imgAvatar/" + logicSystem.getCurrentUser().getAvatarFileName()));
+        JLabel currentUserLabel = new JLabel(logicSystem.getCurrentUser().getLogin());
         currentUserLabel.setForeground(Color.RED);
 
         JLabel currentBalanceLabel = new JLabel();
@@ -138,7 +136,7 @@ public class MainUI extends JFrame implements ActionListener {
     }
 
     private void viewRecords(Account curAccount) {
-        //recordsListModel.clear();
+        recordsListModel.clear();
         Set<Record> records = logicSystem.getRecords(curAccount);
         for (Record record : records) {
             recordsListModel.addElement(record);
@@ -220,7 +218,7 @@ public class MainUI extends JFrame implements ActionListener {
                 Util.getInstance().centerFrame(rDialog);
                 rDialog.setModal(true);
                 rDialog.setVisible(true);
-                viewRecords(logicSystem.getCurrentAccount());
+                viewRecords(curAccount);
                 break;
             case CMD_RELOGIN:
                 Util.getInstance().reLogin(MainUI.this);

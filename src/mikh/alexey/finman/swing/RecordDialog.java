@@ -19,8 +19,6 @@ public class RecordDialog extends JDialog implements ActionListener {
 
     private static Logger logger = LoggerFactory.getLogger(RecordDialog.class);
 
-    private static final String CMD_REFILL_RB = "cmdIsRefill";
-    private static final String CMD_WITHDRAW_RB = "cmdIsWithdraw";
     private static final String CMD_ADD = "cmdAddRecord";
     private static final String CMD_DELETE = "cmdDeleteRecord";
     private static final String CMD_CANCEL = "cmdCancelAction";
@@ -86,11 +84,6 @@ public class RecordDialog extends JDialog implements ActionListener {
         refillWithdrawGroup.add(refillRadioButton);
         refillWithdrawGroup.add(withdrawRadioButton);
         refillRadioButton.setSelected(true);
-
-        /*refillRadioButton.setActionCommand(CMD_REFILL_RB);
-        refillRadioButton.addActionListener(this);
-        withdrawRadioButton.setActionCommand(CMD_WITHDRAW_RB);
-        withdrawRadioButton.addActionListener(this);*/
 
         refillRadioButton.addActionListener(new ActionListener() {
             @Override
@@ -168,19 +161,20 @@ public class RecordDialog extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
         switch (cmd) {
-            /*case CMD_REFILL_RB:
-                isRefill = true;
-                break;
-            case CMD_WITHDRAW_RB:
-                isRefill = false;
-                break;*/
             case CMD_ADD:
                 boolean isAddOperation = isRefill;
                 //FIXME возможная ошибка на ввод данных в поле amountField!
+                Double curAccountBalance = logicSystem.getCurrentAccount().getCurBalance();
                 Double amountOperation = new Double(amountField.getText());
                 Category categorySelect = (Category) categoryList.getSelectedItem();
                 String descOperation = recordDescription.getText();
                 String operationDate = (new java.util.Date(System.currentTimeMillis())).toString();
+
+                if (isAddOperation){
+                    curAccountBalance = curAccountBalance + amountOperation;
+                } else {
+                    curAccountBalance = curAccountBalance - amountOperation;
+                }
 
                 Record newRecord = new Record();
                 newRecord.setAddOperation(isAddOperation);
@@ -188,6 +182,7 @@ public class RecordDialog extends JDialog implements ActionListener {
                 newRecord.setOperationCat(categorySelect);
                 newRecord.setOperationDesc(descOperation);
                 newRecord.setOperationDate(operationDate);
+
                 logicSystem.addRecord(logicSystem.getCurrentAccount(), newRecord);
 
                 dispose();
