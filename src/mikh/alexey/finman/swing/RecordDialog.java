@@ -168,7 +168,7 @@ public class RecordDialog extends JDialog implements ActionListener {
                 Double amountOperation = new Double(amountField.getText());
                 Category categorySelect = (Category) categoryList.getSelectedItem();
                 String descOperation = recordDescription.getText();
-                String operationDate = (new java.util.Date(System.currentTimeMillis())).toString();
+                long operationDate = System.currentTimeMillis();
 
                 if (isAddOperation){
                     curAccountBalance = curAccountBalance + amountOperation;

@@ -10,7 +10,7 @@ public class Record {
     private boolean isAddOperation;
     private String operationDesc;
     private Category operationCat;
-    private String operationDate;
+    private long operationDate;
 
     public void setOperationAmount(double operationAmount) {
         this.operationAmount = operationAmount;
@@ -44,11 +44,11 @@ public class Record {
         return operationCat;
     }
 
-    public void setOperationDate(String operationDate) {
+    public void setOperationDate(long operationDate) {
         this.operationDate = operationDate;
     }
 
-    public String getOperationDate() {
+    public long getOperationDate() {
         return operationDate;
     }
 
