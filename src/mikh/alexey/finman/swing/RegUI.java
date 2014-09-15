@@ -1,11 +1,11 @@
 package mikh.alexey.finman.swing;
 
-import mikh.alexey.finman.helpers.Util;
 import mikh.alexey.finman.logic.Account;
 import mikh.alexey.finman.logic.LogicSystem;
 import mikh.alexey.finman.logic.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static mikh.alexey.finman.helpers.Util.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +40,7 @@ public class RegUI extends JFrame implements ActionListener {
         setResizable(false);
 
         this.logicSystem = logicSystem;
-        avatarFilesList = Util.getInstance().fillFileList();
+        avatarFilesList = fillImageFileList();
 
         DefaultComboBoxModel<String> modelComboBox = new DefaultComboBoxModel<>();
         for (String avatarFileName : avatarFilesList) {
@@ -49,11 +49,11 @@ public class RegUI extends JFrame implements ActionListener {
         avatarList = new JComboBox<>(modelComboBox);
         avatarList.setSelectedIndex(0);
 
-        final JLabel avatarImgLabel = new JLabel(Util.getInstance().createIcon(getClass(), "img/imgAvatar/" + avatarList.getSelectedItem()));
+        final JLabel avatarImgLabel = new JLabel(createIcon(getClass(), "img/imgAvatar/" + avatarList.getSelectedItem()));
         avatarList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                avatarImgLabel.setIcon(Util.getInstance().createIcon(getClass(), "img/imgAvatar/" + avatarList.getSelectedItem()));
+                avatarImgLabel.setIcon(createIcon(getClass(), "img/imgAvatar/" + avatarList.getSelectedItem()));
                 logger.info("Avatar name: {}", avatarList.getSelectedItem().toString());
             }
         });
@@ -141,8 +141,8 @@ public class RegUI extends JFrame implements ActionListener {
 
         String avatarName = avatarList.getSelectedItem().toString();
         String login = loginField.getText();
-        String pass = Util.getInstance().getHash(new String(passField.getPassword()));
-        String passConfirm = Util.getInstance().getHash(new String(passConfirmField.getPassword()));
+        String pass = getHash(new String(passField.getPassword()));
+        String passConfirm = getHash(new String(passConfirmField.getPassword()));
 
         //FIXME здесь в поле balance потенциальная ошибка на вводимые данные!
         String accountName = accountNameField.getText();
@@ -171,6 +171,6 @@ public class RegUI extends JFrame implements ActionListener {
             logicSystem.addAccount(newUser, newAccount);
             logger.info("New account - {} created success. Owner - {}", accountName, login);
         }
-        Util.getInstance().reLogin(RegUI.this);
+        reLogin(RegUI.this);
     }
 }

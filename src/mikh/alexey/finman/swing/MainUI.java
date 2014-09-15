@@ -1,11 +1,13 @@
 package mikh.alexey.finman.swing;
 
-import mikh.alexey.finman.helpers.Util;
 import mikh.alexey.finman.logic.Account;
 import mikh.alexey.finman.logic.LogicSystem;
 import mikh.alexey.finman.logic.Record;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static mikh.alexey.finman.helpers.Util.centerFrame;
+import static mikh.alexey.finman.helpers.Util.createIcon;
+import static mikh.alexey.finman.helpers.Util.reLogin;
 
 import javax.swing.*;
 import java.awt.*;
@@ -95,7 +97,7 @@ public class MainUI extends JFrame implements ActionListener {
         userPanel.setBorder(BorderFactory.createTitledBorder("User data"));
         userPanel.setLayout(new GridBagLayout());
 
-        JLabel avatarImgLabel = new JLabel(Util.getInstance().createIcon(getClass(), "img/imgAvatar/" + logicSystem.getCurrentUser().getAvatarFileName()));
+        JLabel avatarImgLabel = new JLabel(createIcon(getClass(), "img/imgAvatar/" + logicSystem.getCurrentUser().getAvatarFileName()));
         JLabel currentUserLabel = new JLabel(logicSystem.getCurrentUser().getLogin());
         currentUserLabel.setForeground(Color.RED);
 
@@ -203,7 +205,7 @@ public class MainUI extends JFrame implements ActionListener {
 
     public AccountDialog createAccDialog(boolean isAddAccount, boolean isEditAccount) {
         AccountDialog aDialog = new AccountDialog(logicSystem, isAddAccount, isEditAccount);
-        Util.getInstance().centerFrame(aDialog);
+        centerFrame(aDialog);
         aDialog.setModal(true);
         aDialog.setVisible(true);
         return aDialog;
@@ -215,13 +217,13 @@ public class MainUI extends JFrame implements ActionListener {
         switch (cmd) {
             case CMD_ADD_RECORD:
                 RecordDialog rDialog = new RecordDialog(logicSystem, true, false);
-                Util.getInstance().centerFrame(rDialog);
+                centerFrame(rDialog);
                 rDialog.setModal(true);
                 rDialog.setVisible(true);
                 viewRecords(logicSystem.getCurrentAccount());
                 break;
             case CMD_RELOGIN:
-                Util.getInstance().reLogin(MainUI.this);
+                reLogin(MainUI.this);
                 break;
             case CMD_EXIT:
                 System.exit(0);

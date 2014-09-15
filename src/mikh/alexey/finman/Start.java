@@ -1,8 +1,8 @@
 package mikh.alexey.finman;
 
-import mikh.alexey.finman.helpers.Util;
 import mikh.alexey.finman.logic.LogicSystem;
 import mikh.alexey.finman.swing.LoginUI;
+import static mikh.alexey.finman.helpers.Util.centerFrame;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -27,8 +27,7 @@ public class Start {
 
         LogicSystem logicSystem = new LogicSystem();
         JFrame loginFrame = new LoginUI(logicSystem);
-        Util.getInstance().centerFrame(loginFrame);
+        centerFrame(loginFrame);
         loginFrame.setVisible(true);
-
     }
 }

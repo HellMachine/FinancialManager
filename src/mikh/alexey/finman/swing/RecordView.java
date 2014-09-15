@@ -1,7 +1,7 @@
 package mikh.alexey.finman.swing;
 
-import mikh.alexey.finman.helpers.Util;
 import mikh.alexey.finman.logic.Record;
+import static mikh.alexey.finman.helpers.Util.createIcon;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,8 +11,8 @@ import java.awt.*;
  */
 public class RecordView implements ListCellRenderer<Record> {
 
-    JLabel plusImageLabel = new JLabel(Util.getInstance().createIcon(getClass(), "img/plus.png"));
-    JLabel minusImageLabel = new JLabel(Util.getInstance().createIcon(getClass(), "img/minus.png"));
+    JLabel plusImageLabel = new JLabel(createIcon(getClass(), "img/plus.png"));
+    JLabel minusImageLabel = new JLabel(createIcon(getClass(), "img/minus.png"));
 
     @Override
     public Component getListCellRendererComponent(JList<? extends Record> list,

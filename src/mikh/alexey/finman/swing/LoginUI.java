@@ -1,7 +1,9 @@
 package mikh.alexey.finman.swing;
 
-import mikh.alexey.finman.helpers.Util;
 import mikh.alexey.finman.logic.LogicSystem;
+import static mikh.alexey.finman.helpers.Util.centerFrame;
+import static mikh.alexey.finman.helpers.Util.createIcon;
+import static mikh.alexey.finman.helpers.Util.getHash;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,11 +35,11 @@ public class LoginUI extends JFrame implements ActionListener {
         passwordField.setToolTipText("Input password");
 
         JLabel loginLabel = new JLabel();
-        ImageIcon loginIcon = Util.getInstance().createIcon(getClass(), "img/Login.png");
+        ImageIcon loginIcon = createIcon(getClass(), "img/Login.png");
         loginLabel.setIcon(new ImageIcon(loginIcon.getImage().getScaledInstance(24, 24, Image.SCALE_DEFAULT)));
 
         JLabel passLabel = new JLabel();
-        ImageIcon passIcon = Util.getInstance().createIcon(getClass(), "img/Lock.png");
+        ImageIcon passIcon = createIcon(getClass(), "img/Lock.png");
         passLabel.setIcon(new ImageIcon(passIcon.getImage().getScaledInstance(24, 24, Image.SCALE_DEFAULT)));
 
         JButton buttonLogin = new JButton("Login");
@@ -83,12 +85,12 @@ public class LoginUI extends JFrame implements ActionListener {
         switch (cmd){
             case CMD_LOGIN:
                 String login = loginField.getText();
-                String pass = Util.getInstance().getHash(new String(passwordField.getPassword()));
+                String pass = getHash(new String(passwordField.getPassword()));
                 if (login.isEmpty() || pass.isEmpty()){
                     return;
                 }else if (logicSystem.login(login, pass) != null){
                     JFrame mainUI = new MainUI(logicSystem);
-                    Util.getInstance().centerFrame(mainUI);
+                    centerFrame(mainUI);
                     LoginUI.this.setVisible(false);
                     mainUI.setVisible(true);
                 } else {
@@ -97,7 +99,7 @@ public class LoginUI extends JFrame implements ActionListener {
                 break;
             case CMD_REGISTRATION:
                 JFrame regFrame = new RegUI(logicSystem);
-                Util.getInstance().centerFrame(regFrame);
+                centerFrame(regFrame);
                 LoginUI.this.setVisible(false);
                 regFrame.setVisible(true);
                 break;

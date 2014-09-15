@@ -19,27 +19,19 @@ import java.security.NoSuchAlgorithmException;
 
 public class Util {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
-    private String[] listFiles;
+    private static Logger logger = LoggerFactory.getLogger(Util.class);
+    private static String[] listFiles;
 
-    public static Util instance = new Util();
-
-    private Util() {
-    }
-
-    public static Util getInstance() {
-        return instance;
-    }
-
-    public void reLogin(JFrame frame) {
+    public static void reLogin(JFrame frame) {
         frame.setVisible(false);
         LogicSystem logicSystem = new LogicSystem();
         JFrame loginFrame = new LoginUI(logicSystem);
-        Util.getInstance().centerFrame(loginFrame);
+        centerFrame(loginFrame);
         loginFrame.setVisible(true);
+        logger.info("Reloging...");
     }
 
-    public void centerFrame(Window frame) {
+    public static void centerFrame(Window frame) {
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((screenSize.getWidth() - frame.getWidth()) / 2);
         if (x < 0) {
@@ -52,7 +44,7 @@ public class Util {
         frame.setBounds(x, y, frame.getWidth(), frame.getHeight());
     }
 
-    public ImageIcon createIcon(Class<?> recallClass, String path) {
+    public static ImageIcon createIcon(Class<?> recallClass, String path) {
 
         java.net.URL imgURL = recallClass.getResource(path);
 
@@ -64,7 +56,7 @@ public class Util {
         }
     }
 
-    public String getHash(String str) {
+    public static String getHash(String str) {
 
         MessageDigest md5;
         StringBuffer hexString = new StringBuffer();
@@ -86,7 +78,7 @@ public class Util {
         return hexString.toString();
     }
 
-    public String[] fillFileList() {
+    public static String[] fillImageFileList() {
 
         try {
             URL url = Start.class.getResource("swing/img/imgAvatar");
@@ -97,7 +89,6 @@ public class Util {
             for (int i = 0; i < filesInDir.length; i++) {
                 listFiles[i] = filesInDir[i].getName();
             }
-
         } catch (Exception x) {
             x.printStackTrace();
         }
