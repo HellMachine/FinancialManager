@@ -1,5 +1,6 @@
 package mikh.alexey.finman.helpers;
 
+import mikh.alexey.finman.Start;
 import mikh.alexey.finman.logic.LogicSystem;
 import mikh.alexey.finman.swing.LoginUI;
 import org.slf4j.Logger;
@@ -88,17 +89,15 @@ public class Util {
     public String[] fillFileList() {
 
         try {
-            ClassLoader cl = Util.class.getClassLoader();
-            URL resource = cl.getResource("mikh/alexey/finman/swing/img/imgAvatar/");
-            char[] values = resource.getPath().toCharArray();
-            String path = new String(values, 1, values.length - 1);
-
-            File dir = new File(path);
+            URL url = Start.class.getResource("swing/img/imgAvatar");
+            java.nio.file.Path resPath = java.nio.file.Paths.get(url.toURI());
+            File dir = resPath.toFile();
             File[] filesInDir = dir.listFiles();
             listFiles = new String[filesInDir.length];
             for (int i = 0; i < filesInDir.length; i++) {
                 listFiles[i] = filesInDir[i].getName();
             }
+
         } catch (Exception x) {
             x.printStackTrace();
         }
