@@ -5,6 +5,7 @@ import static mikh.alexey.finman.helpers.Util.createIcon;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Date;
 
 /**
  * @author lxmikh@gmail.com
@@ -23,12 +24,12 @@ public class RecordView implements ListCellRenderer<Record> {
         recordViewPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
         if (value != null) {
-            JLabel transAmount = new JLabel(value.getOperationAmount() + " RUB");
-            JLabel transInfo = new JLabel(value.getOperationCat().getCategoryName() + " " + value.getOperationDate());
+            JLabel transInfo = new JLabel(value.getOperationAmount() + " RUB" + "   " + "Category: " + value.getOperationCat().getCategoryName());
+            JLabel transDate = new JLabel("Date: " + new Date(value.getOperationDate()).toString());
             JLabel transDesc = new JLabel(value.getOperationDesc());
             JLabel transImage = (value.isAddOperation() ? plusImageLabel : minusImageLabel);
-            recordViewPanel.add(transAmount, BorderLayout.NORTH);
-            recordViewPanel.add(transInfo, BorderLayout.CENTER);
+            recordViewPanel.add(transInfo, BorderLayout.NORTH);
+            recordViewPanel.add(transDate, BorderLayout.CENTER);
             recordViewPanel.add(transDesc, BorderLayout.SOUTH);
             recordViewPanel.add(transImage, BorderLayout.EAST);
         }
