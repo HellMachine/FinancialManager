@@ -8,8 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class DbDataStore implements DataStore {
 
@@ -97,7 +96,7 @@ public class DbDataStore implements DataStore {
 
     @Override
     public Set<Account> getAccounts(User owner) {
-        Set<Account> accounts = new HashSet<>();
+        Set<Account> accounts = new TreeSet<>(new AccountComparator());
         PreparedStatement pStmt = null;
         ResultSet rs = null;
         try {
@@ -124,7 +123,7 @@ public class DbDataStore implements DataStore {
 
     @Override
     public Set<Record> getRecords(Account account) {
-        Set<Record> records = new HashSet<>();
+        Set<Record> records = new TreeSet<>(new RecordComparator());
 
         PreparedStatement pStmt = null;
         ResultSet rs = null;
@@ -140,7 +139,7 @@ public class DbDataStore implements DataStore {
                 record.setOperationDesc(rs.getString(rs.findColumn("DESCRIPTION")));
                 int categoryId = (rs.getInt(rs.findColumn("CATEGORY_ID")));
                 record.setOperationCat(getCategoryById(categoryId));
-                String recordDate = rs.getString(rs.findColumn("OPERATION_DATE"));
+                long recordDate = rs.getLong(rs.findColumn("OPERATION_DATE"));
                 record.setOperationDate(recordDate);
                 records.add(record);
             }
@@ -256,5 +255,24 @@ public class DbDataStore implements DataStore {
     @Override
     public Record removeRecord(Account from, Record record) {
         return null;
+    }
+}
+
+class RecordComparator implements Comparator<Record>{
+
+    @Override
+    public int compare(Record o1, Record o2) {
+        long rec1Date = o1.getOperationDate();
+        long rec2Date = o2.getOperationDate();
+        int res = (rec1Date > rec2Date) ?  1 : -1;
+        return res;
+    }
+}
+
+class AccountComparator implements Comparator<Account>{
+
+    @Override
+    public int compare(Account o1, Account o2) {
+        return (o1.getNameAcc()).compareTo(o2.getNameAcc());
     }
 }
