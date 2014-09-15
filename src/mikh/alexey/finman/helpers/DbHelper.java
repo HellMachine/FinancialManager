@@ -61,7 +61,7 @@ public class DbHelper {
 
     boolean isTablesExist() throws Exception {
         Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USERS';");
+        ResultSet rs = stmt.executeQuery("SELECT count(*) FROM sqlite_master WHERE type='table';");
         boolean result = true;
         int count = rs.getInt(1);
         if (count == 0) {
