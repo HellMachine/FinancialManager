@@ -40,5 +40,8 @@ public class User {
         return avatarFileName;
     }
 
+    public String toString(){
+        return login;
+    }
 
 }
