@@ -153,7 +153,6 @@ public class RecordDialog extends JDialog implements ActionListener {
 
         setContentPane(recordPanel);
         pack();
-        logger.info("Width:" + recordPanel.getWidth() + ", Height:" + recordPanel.getHeight());
     }
 
 
@@ -171,9 +170,9 @@ public class RecordDialog extends JDialog implements ActionListener {
                 long operationDate = System.currentTimeMillis();
 
                 if (isAddOperation){
-                    curAccountBalance = curAccountBalance + amountOperation;
+                    logicSystem.getCurrentAccount().setCurBalance(curAccountBalance + amountOperation);
                 } else {
-                    curAccountBalance = curAccountBalance - amountOperation;
+                    logicSystem.getCurrentAccount().setCurBalance(curAccountBalance - amountOperation);
                 }
 
                 Record newRecord = new Record();

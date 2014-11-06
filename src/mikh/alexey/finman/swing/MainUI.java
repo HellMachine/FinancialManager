@@ -36,9 +36,12 @@ public class MainUI extends JFrame implements ActionListener {
     private JLabel userNameLabel = new JLabel("User: ");
     private JLabel balanceLabel = new JLabel("Balance: ");
     private JLabel accountLabel = new JLabel("Account: ");
+    private JLabel currentBalanceLabel = new JLabel();
+    private DefaultComboBoxModel<Account> modelComboBox;
     private JComboBox accountList;
     private DefaultListModel<Record> recordsListModel;
     private JButton addRecordButton = new JButton("Add Record");
+    private double accountBalance;
 
     private LogicSystem logicSystem;
 
@@ -56,15 +59,13 @@ public class MainUI extends JFrame implements ActionListener {
         listRecords.setModel(recordsListModel);
         listRecords.setLayoutOrientation(JList.VERTICAL);
 
-        final DefaultComboBoxModel<Account> modelComboBox = new DefaultComboBoxModel<>();
-        for (Account acc : logicSystem.getAccounts(logicSystem.getCurrentUser())) {
-            modelComboBox.addElement(acc);
-        }
+        modelComboBox = new DefaultComboBoxModel<>();
+        updateModelComboBox();
         accountList = new JComboBox<>(modelComboBox);
         accountList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Account account = (Account) modelComboBox.getSelectedItem();
+                Account account = (Account) accountList.getSelectedItem();
                 logicSystem.setCurrentAccount(account);
                 viewRecords(account);
             }
@@ -77,13 +78,13 @@ public class MainUI extends JFrame implements ActionListener {
             viewRecords(curAccount);
         }
 
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+
         JPanel recordPanel = new JPanel();
         recordPanel.setBorder(BorderFactory.createTitledBorder("Records"));
         recordPanel.setLayout(new BorderLayout());
         recordPanel.add(new JScrollPane(listRecords), BorderLayout.CENTER);
-
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
 
         setJMenuBar(addMenu());
         mainPanel.add(createUserPanel(curAccount), BorderLayout.NORTH);
@@ -101,10 +102,8 @@ public class MainUI extends JFrame implements ActionListener {
         JLabel currentUserLabel = new JLabel(logicSystem.getCurrentUser().getLogin());
         currentUserLabel.setForeground(Color.RED);
 
-        JLabel currentBalanceLabel = new JLabel();
         if (account != null) {
-            Double accountBalance = account.getCurBalance();
-            currentBalanceLabel.setText(accountBalance + " RUB");
+            updateBalance(account);
         }
 
         addRecordButton.setActionCommand(CMD_ADD_RECORD);
@@ -138,11 +137,24 @@ public class MainUI extends JFrame implements ActionListener {
     }
 
     private void viewRecords(Account curAccount) {
+        updateBalance(curAccount);
         recordsListModel.clear();
         Set<Record> records = logicSystem.getRecords(curAccount);
         for (Record record : records) {
             recordsListModel.addElement(record);
         }
+    }
+
+    public void updateBalance(Account account){
+        accountBalance = account.getCurBalance();
+        currentBalanceLabel.setText(accountBalance + " RUB");
+    }
+
+    public void updateModelComboBox(){
+        for (Account acc : logicSystem.getAccounts(logicSystem.getCurrentUser())) {
+            modelComboBox.addElement(acc);
+        }
+        accountList = new JComboBox<>(modelComboBox);
     }
 
     public JMenuBar addMenu() {
@@ -230,6 +242,7 @@ public class MainUI extends JFrame implements ActionListener {
                 break;
             case CMD_ADD_ACCOUNT:
                 createAccDialog(true, false);
+                //updateModelComboBox();
                 break;
             case CMD_EDIT_ACCOUNT:
                 createAccDialog(false, true);
