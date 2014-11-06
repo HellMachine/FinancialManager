@@ -22,9 +22,10 @@ public class RecordView implements ListCellRenderer<Record> {
         JPanel recordViewPanel = new JPanel();
         recordViewPanel.setLayout(new BorderLayout());
         recordViewPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        String sing = value.isAddOperation() ? "+" : "-";
 
         if (value != null) {
-            JLabel transInfo = new JLabel(value.getOperationAmount() + " RUB" + "   " + "Category: " + value.getOperationCat().getCategoryName());
+            JLabel transInfo = new JLabel(sing + value.getOperationAmount() + " RUB" + "   " + "Category: " + value.getOperationCat().getCategoryName());
             JLabel transDate = new JLabel("Date: " + new Date(value.getOperationDate()).toString());
             JLabel transDesc = new JLabel(value.getOperationDesc());
             JLabel transImage = (value.isAddOperation() ? plusImageLabel : minusImageLabel);
