@@ -1,6 +1,5 @@
 FinancialManager
 ================
-
 Финансовый менеджер 
 
 Login GUI<br>
